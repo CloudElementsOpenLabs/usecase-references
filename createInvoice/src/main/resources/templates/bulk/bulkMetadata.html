@@ -1,0 +1,30 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<form method="POST" th:action="${ '/scheduleBulk/' + selectedObject }">
+			<div class="row" style="padding-top:50px; ">
+				<div class="col-sm-4">
+					<h3>Listing available meta data for object <span th:text="${ selectedObject }"/> </h3>
+				</div>
+			</div>
+
+			<div class="row"  th:each="obj : ${ metaList }" th:text="${ obj }">
+				<div class="col-sm-4">
+					<span > 
+						<input type="checkbox" class="checkbox" name="metadata" id="metadata" th:value="${ obj }"/> 
+					</span>
+					
+				</div>
+			</div>
+		
+		
+			<div class="row" style="padding-top:25px">
+				<div class="col">
+					<button type="submit" class="btn btn-primary" style="width:100%"
+					onclick="">Schedule bulk data download <span class="fa fa-next" /></button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+</div>

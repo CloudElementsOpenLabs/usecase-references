@@ -1,0 +1,32 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		
+		<div class="row" style="padding-top:50px; ">
+			<div class="col-sm-4">
+				<button class="btn btn-outline-success btn-sm" id="objectButton" th:each="obj : ${ objectList }" th:text="${ obj }"></button>		
+			</div>
+			
+		</div>
+		
+		
+		<div class="row" style="padding-top:25px">
+			<div class="col">
+				<button type="submit" class="btn btn-primary" style="width:100%"
+				onclick="">List meta data <span class="fa fa-next" /></button>
+			</div>
+		</div>
+	</div>
+	
+	
+		
+		
+	<script language="javascript">
+		$(document).ready(function() {
+			$('#objectButton').click(function () {   
+				location.href = "/bulkMetadata/" + this.text;
+			 });
+			
+		});
+	</script>
+</div>

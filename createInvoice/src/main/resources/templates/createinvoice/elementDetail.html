@@ -1,0 +1,94 @@
+<form action="/doAuthentication" method="POST" th:object="${ configurationField }" >
+
+	<!--  Loop over mandatory fields to authenticate -->
+	<div class="row" 
+			th:each="obj : ${element.configuration}"
+			th:if=" ${ obj.required == 'true' && obj.internal == 'false' && obj.hideFromConsole == 'false' && (obj.groupName == null || obj.groupName == 'basic')  }">
+			
+		<div class="col-sm">
+			<div class="row" style="padding-top:10px">
+				<div class="col-sm">
+					<span th:text="${obj.name}" /> (<span th:text="${obj.key}" />)
+				</div>
+			</div>
+			<div class="row" th:if="${ obj.type != 'COMBO' }">
+				<div class="col-sm">
+					<input type="text" 
+							th:name="${ obj.key }" 
+							th:value="${obj.defaultValue}" 
+							style="width: 100%"/>
+				</div>
+			</div>
+			
+			<div class="row" th:if="${ obj.type == 'COMBO' && obj.options != null }">
+				<div class="col-sm">
+					<select th:name="${ obj.key }" style="width: 100%">
+						<option th:each="option : ${obj.options}" 
+								th:text="${option.description}"
+								th:value="${option.value}" />
+					</select>
+				</div>
+			</div>
+		</div>
+		
+	</div>	
+	
+	
+	<!--  What our UI shows as "OPTIONAL FIELDS" -->
+	
+	<div class="row" 
+			th:each="obj : ${element.configuration}"
+			th:if=" ${ obj.required == 'true' && 
+						obj.internal == 'false' && 
+						obj.hideFromConsole == 'true' && 
+						(obj.groupName == null || obj.groupName == 'basic')  }">
+			
+		<div class="col-sm">
+			<div class="row" style="padding-top:10px">
+				<div class="col-sm">
+					<span th:text="${obj.name}" /> (<span th:text="${obj.key}" />)
+				</div>
+			</div>
+			<div class="row" th:if="${ obj.type != 'COMBO' }">
+				<div class="col-sm">
+					<input type="text" 
+							th:name="${ obj.key }" 
+							th:value="${obj.defaultValue}" 
+							style="width: 100%"/>
+				</div>
+			</div>
+			
+			<div class="row" th:if="${ obj.type == 'COMBO' && obj.options != null }">
+				<div class="col-sm">
+					<select th:name="${ obj.key }" style="width: 100%">
+						<option th:each="option : ${obj.options}" 
+								th:text="${option.description}"
+								th:value="${option.value}" />
+					</select>
+				</div>
+			</div>
+		</div>
+		
+	</div>	
+	
+	
+	
+	<!--  Add the element key by default so back-end knows which element we are talking about for instance creation -->
+	<div class="row" style="padding-top:10px">
+		<div class="col-sm">Element key</div>
+	</div>
+ 	<div class="row">
+		<div class="col-sm">
+			<input type="text" th:name="elementId" th:value="${element.id}" style="width: 100%" readonly/>
+		</div>
+	</div>
+	
+	
+	
+	
+	<div class="row" style="padding-top:10px">
+		<div class="col-sm">
+			<button type="submit" class="btn btn-primary" style="width: 100%">Authenticate to <span th:text="${ element.name }" /></button>
+		</div>
+	</div>
+</form>
