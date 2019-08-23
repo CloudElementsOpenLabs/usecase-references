@@ -77,10 +77,8 @@ public class CreateInvoiceViewController {
 		/* 
 		 * This should be the real code instead of putting in the netsuiteToken by default
 		 */
-		
-		if (request.getAttribute("token") != null) { // CE Instance token received // element instance successfully created
-			HTTPUtil.saveSessionToken(request, request.getAttribute("app").toString(), request.getAttribute("token").toString() ); // "notapplicable" as I'm currently only handling one type of element
-			request.getSession().setAttribute("SELECTED_TOKEN", request.getAttribute("token").toString());
+		if (request.getParameter("token") != null) { // CE Instance token received // element instance successfully created
+			request.getSession().setAttribute("SELECTED_TOKEN", request.getParameter("token").toString());
 		}
 		
 		return "createinvoice/createInvoice_1";
