@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,6 +30,7 @@ import com.cloudelements.demo.model.InvoiceTwo;
 import com.cloudelements.demo.model.Product;
 import com.cloudelements.demo.usecase.authentication.AuthenticationController;
 import com.cloudelements.demo.usecase.bulk.BulkController;
+import com.cloudelements.demo.usecase.bulk.BulkService;
 import com.cloudelements.demo.usecase.element.ElementService;
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
 import com.cloudelements.demo.util.AuthenticationUtil;
@@ -39,7 +42,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Controller
 public class CreateInvoiceViewController {
-
+	private static final Logger logger = LoggerFactory.getLogger(CreateInvoiceViewController.class);
+	
 	@Autowired
 	private EnvironmentService envService;
 	
@@ -140,7 +144,7 @@ public class CreateInvoiceViewController {
 		
 		
 		ObjectMapper mapper = new ObjectMapper ();
-		System.out.println( mapper.writeValueAsString( myInvoice ) );
+		logger.debug( mapper.writeValueAsString( myInvoice ) );
 
 		
 		JSONObject returnObj = HTTPUtil.doPost(BulkController.getToken(request), "/elements/api-v2/javaInvoice2", mapper.writeValueAsString(myInvoice) );

@@ -27,7 +27,8 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Service
 public class InstancePropertiesTest {
-	
+	private static String userToken = "";
+	private static String orgToken = "";
 	
 	@Test
 	public void createFileOutput () throws ParseException, IOException {
@@ -47,7 +48,7 @@ public class InstancePropertiesTest {
 	public List<String> fetchInstanceDetails(String elementId) throws ParseException {
 		try {
 			System.out.println("Running for **** " + elementId);
-			String authorization = "User HONfNsYq/SGbz/GPN9Wq/iiJRW8Oa5hn89+eYoVaLz8=, Organization 8f8ccb87520d0082c1230d1c553d83eb";
+			String authorization = "User " + userToken + ", Organization " + orgToken;
 			
 			HttpGet getter = new HttpGet("http://staging.cloud-elements.com/elements/api-v2/elements/" + elementId);
 			getter.addHeader("Authorization", authorization);

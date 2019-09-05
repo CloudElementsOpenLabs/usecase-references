@@ -10,18 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudelements.demo.model.BulkStatus;
+import com.cloudelements.demo.usecase.authentication.AuthenticationController;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RestController
 public class BulkController {
-
+	private static final Logger logger = LoggerFactory.getLogger(BulkController.class);
+	
 	@Autowired
 	private BulkService bulkService;
 	
@@ -67,7 +71,7 @@ public class BulkController {
 		ArrayList<JSONObject> objList = bulkService.downloadBulk(BulkController.getToken(request), bulkId, resource);
 		request.getSession().setAttribute("MODEL_" + resource, objList);
 		
-		System.out.println("Downloaded " + objList.size() + " records stored as MODEL_" + resource);
+		logger.debug("Downloaded " + objList.size() + " records stored as MODEL_" + resource);
 		return String.valueOf(objList.size());
 	}
 	

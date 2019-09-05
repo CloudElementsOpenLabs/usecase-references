@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>createInvoiceo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<name>createInvoiceo</name>
+	<description>Create invoice - one integration to multiple ERP systems (Cloud Elements)</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -32,6 +32,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

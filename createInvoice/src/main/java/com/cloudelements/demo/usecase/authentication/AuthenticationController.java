@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudelements.demo.model.Element;
+import com.cloudelements.demo.usecase.eventhandling.APIResponseController;
 import com.cloudelements.demo.util.AuthenticationUtil;
 import com.cloudelements.demo.util.HTTPUtil;
 
@@ -23,13 +26,14 @@ import com.cloudelements.demo.util.HTTPUtil;
 @RestController
 public class AuthenticationController {
 
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 	/*
 	 * Create the expected CE JSON Structure based upon incoming data from the viewController when handling BASIC authentication
 	 * Returns the CE instancetoken if available, null if not 
 	 */
 	public String handleBasicAuthentication (Element el, HashMap<String, String> configMap) {
 		JSONObject authObject = AuthenticationUtil.createAuthConfiguration(el.getKey(), "myInstance", new String[] {"javaApp"}, configMap);
-		System.out.println( authObject.toJSONString() );
+		logger.debug( authObject.toJSONString() );
 		JSONObject instanceObj = HTTPUtil.doPost(null, "/elements/api-v2/instances", authObject.toJSONString());
 
 		String token = instanceObj.get("token").toString();
@@ -48,7 +52,7 @@ public class AuthenticationController {
 				"&apiSecret=" + apiSecret + "&callbackUrl=" + callbackUrl);
 
 		if (redirectObj.containsKey("message")) {
-			System.out.println("**** EXCEPTION >>> " + redirectObj.get("message"));
+			logger.debug("**** EXCEPTION >>> " + redirectObj.get("message"));
 			return null;
 		} else {
 			String redirectURL = redirectObj.get("oauthUrl") != null ? redirectObj.get("oauthUrl").toString() : "something_went_wrong"; //TODO: should handle incorrect responses better
@@ -82,7 +86,7 @@ public class AuthenticationController {
 			response.sendRedirect("/createInvoice?token=" + token + "&app=dowehavethis" );
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Full url received = " + request.getRequestURL().toString());
+			logger.debug("Full url received = " + request.getRequestURL().toString());
 		}
 	}
 }

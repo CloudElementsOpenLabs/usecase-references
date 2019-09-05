@@ -29,9 +29,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.util.ArrayUtils;
 
 import com.cloudelements.demo.model.BulkResult;
+import com.cloudelements.demo.usecase.createinvoice.CreateInvoiceViewController;
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,7 +43,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class HTTPUtil {
 	public static String LOCALDIRECTORY = System.getProperty("user.dir") + "/expensemanagement";
-
+	private static final Logger logger = LoggerFactory.getLogger(HTTPUtil.class);
+	
 	private static EnvironmentService envService;
 	public static void setEnvironmentService(EnvironmentService service) {
 		envService = service;
@@ -89,9 +93,9 @@ public class HTTPUtil {
             	if (obj instanceof JSONObject) {
             		JSONObject jsonObj = (JSONObject) obj;
             		if (jsonObj.get("message") != null) {
-            			System.out.println("Received cloud elements error ");
-            			System.out.println(jsonObj.get("message"));
-            			System.out.println(jsonObj.get("providerMessage"));
+            			logger.debug("Received cloud elements error ");
+            			logger.debug(String.valueOf(jsonObj.get("message")));
+            			logger.debug(String.valueOf(jsonObj.get("providerMessage")));
             		} else {
             			return jsonObj;
             		}
@@ -111,7 +115,7 @@ public class HTTPUtil {
 	 */
 	public static JSONObject doPost (String token, String URLStr, String jsonBody) {
 		String authorization = envService.getAuthorizationHeader() + (token != null ?  ", Element " + token : "");
-		String contentType	 = "application/json";
+		String contentType = "application/json";
 		
 		HttpClient client = new DefaultHttpClient();
         try{
@@ -133,8 +137,8 @@ public class HTTPUtil {
             	if (obj instanceof JSONObject) {
             		JSONObject jsonObj = (JSONObject) obj;
             		if (jsonObj.get("message") != null) {
-            			System.out.println("Received cloud elements error ");
-            			System.out.println(jsonObj.get("message"));
+            			logger.debug("Received cloud elements error ");
+            			logger.debug(String.valueOf(jsonObj.get("message")));
             		} else {
             			return jsonObj;
             		}
@@ -158,8 +162,8 @@ public class HTTPUtil {
 		getter.addHeader("Accept", "application/json"); // This forces bulk to return json instead of csv
 		
 		try {
-			HttpClient client 		= new DefaultHttpClient();
-			HttpResponse response 	= client.execute(getter);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(getter);
 			if(response!=null){
             	InputStream in = response.getEntity().getContent() ;
             	JSONParser parser = new JSONParser();
@@ -184,8 +188,8 @@ public class HTTPUtil {
 		getter.addHeader("Accept", "application/json"); // This forces bulk to return json instead of csv
 		
 		try {
-			HttpClient client 		= new DefaultHttpClient();
-			HttpResponse response 	= client.execute(getter);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(getter);
 			if(response!=null){
             	InputStream in = response.getEntity().getContent() ;
             	JSONParser parser = new JSONParser();
@@ -211,11 +215,11 @@ public class HTTPUtil {
 		getter.addHeader("Accept", "application/json"); // This forces bulk to return json instead of csv
 		
 		try {
-			HttpClient client 		= new DefaultHttpClient();
-			HttpResponse response 	= client.execute(getter);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(getter);
 			
 			if (! ArrayUtils.isEmpty(response.getHeaders("Elements-Next-Page-Token"))) {
-				System.out.println("NEXT PAGE TOKEN: " + ((BufferedHeader) response.getHeaders("Elements-Next-Page-Token")[0]).getValue());
+				logger.debug ("NEXT PAGE TOKEN: " + ((BufferedHeader) response.getHeaders("Elements-Next-Page-Token")[0]).getValue());
 			}
 			
 			
@@ -263,8 +267,8 @@ public class HTTPUtil {
 		getter.addHeader("Authorization", authorization);
 		
 		try {
-			HttpClient client 		= new DefaultHttpClient();
-			HttpResponse response 	= client.execute(getter);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(getter);
 			if(response!=null){
             	InputStream in = response.getEntity().getContent() ;
             	JSONParser parser = new JSONParser();

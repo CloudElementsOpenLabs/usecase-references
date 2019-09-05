@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,7 @@ import com.google.gson.stream.JsonReader;
 
 @Service
 public class BulkService {
+	private static final Logger logger = LoggerFactory.getLogger(BulkService.class);
 	
 	@Autowired
 	private EnvironmentService envService;
@@ -98,7 +101,6 @@ public class BulkService {
 		ArrayList<String> tokenList = new ArrayList<>();
 		int i = 1;
 		do {
-		//for (int i = 0; i < 10; i++) {
 			if (bulkResult != null && bulkResult.getNextPage() != null) {
 				query = "?pageSize=" + pageSize + "&nextPage=" + bulkResult.getNextPage();
 			}
@@ -115,7 +117,7 @@ public class BulkService {
 			} catch (Exception e) {
 				return null;
 			}
-			System.out.println("ARRSIZE " + objList.size() + " TIME " + i + " NEXTTOKEN " + bulkResult.getNextPage() + " -- " + url);
+			logger.debug("ARRSIZE " + objList.size() + " TIME " + i + " NEXTTOKEN " + bulkResult.getNextPage() + " -- " + url);
 			
 			i++;
 			tokenList.add(bulkResult.getNextPage());

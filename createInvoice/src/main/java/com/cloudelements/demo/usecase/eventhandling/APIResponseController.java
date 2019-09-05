@@ -6,6 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,9 +29,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 public class APIResponseController {
 
+	private static final Logger logger = LoggerFactory.getLogger(APIResponseController.class);	
+	
 	@RequestMapping(value="/apiResponse", method=RequestMethod.POST)
 	public void handleAPIResponse(@RequestBody String payload) throws ParseException, JsonParseException, JsonMappingException, IOException {
-		System.out.println("*** Received event *** \n" + payload );
+		logger.debug("*** Received event *** \n" + payload);
+		
 		
 		Object obj 			= new JSONParser().parse(payload);
 		JSONObject jsonObj 	= (JSONObject) obj;
@@ -43,8 +48,8 @@ public class APIResponseController {
 			ObjectMapper mapper = new ObjectMapper();
 			APIEvent apiEvent = mapper.readValue (currObject.toJSONString(), APIEvent.class);
 			
-			System.out.println("**** EVENT " + i + " ****");
-			System.out.println(apiEvent.getObjectType() + " " + apiEvent.getEventType() + " with id " + apiEvent.getObjectId());
+			logger.debug("**** EVENT " + i + " ****");
+			logger.debug(apiEvent.getObjectType() + " " + apiEvent.getEventType() + " with id " + apiEvent.getObjectId());
 		}
 	}
 	

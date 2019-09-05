@@ -44,32 +44,4 @@ public class ElementViewController {
 		return "createinvoice/elementDetail";
 	}
 	
-	/*
-	 * TODO: REMOVE ME? This is already in the authenticationController??
-	 */
-	@RequestMapping (path = "/oauthRedirect", method = RequestMethod.POST)
-	public void oauthRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
-		String key 				= request.getParameter("oauth.api.key");
-		String secret 			= request.getParameter("oauth.api.secret");
-		String callbackURL 		= request.getParameter("oauth.callback.url");
-		String url 				= request.getParameter("oauth.authorization.url");
-		String elementId		= request.getParameter("elementId");
-		
-		
-		request.getSession().setAttribute("ELEMENT_FIELD_MAP", request.getParameterMap());
-		
-		
-		
-		String dataStr = "apiKey=" + key + "&apiSecret=" + secret + "&callbackUrl=" + callbackURL;
-				//+ "&scope=com.intuit.quickbooks.accounting&authentication.type=oauth2";
-		URL authURL = new URL(envService.getURL() + "/elements/api-v2/elements/" + elementId + "/oauth/url?" + dataStr);
-		
-		InputStream in = authURL.openStream();
-		JSONParser parser = new JSONParser ();
-		Object obj = parser.parse(new InputStreamReader(in));
-		JSONObject jsonObj = (JSONObject) obj;
-		in.close();
-		
-		response.sendRedirect((String) jsonObj.get("oauthUrl"));
-	}
 }
