@@ -1,0 +1,205 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div class="row" style="padding-top:50px; margin-bottom:20px">
+			<div class="col-sm">
+				<h4 >Step 3. Create your invoice</h4>
+			</div>
+		</div>
+		
+		
+		<div class="row" style="padding:0px;" th:if="${ invoiceId != null }">
+				<div class="alert alert-info" role="alert" style="width: 100%">
+					Invoice successfully created with id <span style="font-weight: bold" th:text="${ invoiceId }" /> 
+					<!-- 
+					 Click this link to see the invoice in the end-point.
+					 -->
+				</div>
+		</div>
+		
+		
+	<form method="POST" action="/createInvoice4/" id="invoiceForm">
+		<div class="row" style="padding:20px; border: 1px solid #C0C0C0; border-radius:5px">
+			<div class="col-sm">
+				<div class="row">
+					<div class="col-sm"><img src="/images/mycompany_logo.png" class="companyLogo" /></div>
+					<div class="col-sm" style="text-align: right">
+						MY COMPANY <br/>
+						+32 0123 45 83 72 <br/>
+						Antwerp, 2000 <br/>
+						Belgium <br/>
+						BTW BE 1234 567 890
+					</div>
+				</div>
+				
+				
+				
+				<div class="row" style="margin-top: 50px">
+					<div class="col-sm">
+						<span class="invoiceTitle">Billed to</span> <br/>
+						<select name="vendorSelection" id="vendorSelection" onchange="updateInvoiceForm(this)">
+							<option>Select vendor</option>
+							<option th:each="vendor : ${session.get('MODEL_javaVendor')}" th:value="${ vendor.id }" th:text="${ '(' + vendor.id + ') ' + vendor.name }" />
+						</select>
+						
+						<br/><br/>
+						<span class="invoiceTitle">Invoice currency</span> <br/>
+						<select name="currencySelection" id="currencySelection" onchange="updateCurrency(this)">
+							<option>Select currency</option>
+							<option th:each="currency : ${session.get('MODEL_javaCurrency')}" th:value="${ currency.id }" th:text="${ currency.isoCode }" />
+						</select>
+						
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Date of issue</span> <br/>
+						<span th:text="${#calendars.format(#calendars.createNow(), 'dd MMM yyyy')}" />
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Invoice number</span><br/>
+						<input type="text" value="1234.0001" name="invoiceNumber" id="invoiceNumber" style="width:45%"/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Amount due</span> <br/>
+						<span class="invoiceAmount" id="invoiceAmount1">$24.20</span>
+					</div>
+				</div>
+				
+				
+				
+
+				<div class="row"  style="margin-top: 80px">
+					<div class="col-sm">
+						<H3 class="invoiceTitle">Invoice items / services</H3>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm">
+						<span class="invoiceTitle">Description</span> <br/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Rate</span> <br/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Qty</span><br/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span class="invoiceTitle">Line total</span> <br/>
+					</div>
+				</div>
+				
+				<div class="row"  id="rowOrigin" style="padding-top:10px"> <!-- dynamic row -->
+					<div class="col-sm">
+						<select name="itemId" id="itemId">
+							<option th:each="product : ${session.get('MODEL_javaProduct')}" th:value="${ product.id }" th:text="${ '(' + product.id + ') ' + product.description }" />
+						</select>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<input type="text" value="20" id="itemRate" name="itemRate" style="width: 15%" onchange="updateLine(this.parentElement.parentElement)"/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<input type="text" value="1" id="itemQuantity" name="itemQuantity" style="width: 15%" onchange="updateLine(this.parentElement.parentElement)"/>
+					</div>
+					<div class="col-sm" style="text-align: right">
+						<span id="lineTotal">20</span>
+					</div>
+				</div>
+				
+				<div  id="rowAppender"> </div>
+
+				<div class="row">
+					<div class="col-sm" style="text-align: right; margin-top: 25px">
+						<button class="btn btn-success" type="button" onclick="duplicate()"><span class="fa fa-plus"> Add line</span></button>
+					</div>
+				</div>
+				
+				
+				<div class="row" style="margin-top:50px;  border-top: 1px solid #C0C0C0">
+					<div class="col-sm"></div>
+					<div class="col-sm"></div>
+					<div class="col-sm" style="padding-top:20px;" >
+						<div class="row" style="text-align:right;">
+							<div class="col-sm">Subtotal</div>
+							<div class="col-sm"style="width: 10%" id="subtotalAmount">$20.00</div>
+						</div>
+						<div class="row" style="text-align:right; ">
+							<div class="col-sm">Tax <input type="text" style="width:20%" id="taxInput" name="vatPercentage" value="21"/>%</div>
+							<div class="col-sm"><span id="calculatedTax">$4.20</span></div>
+						</div>
+						<div class="row" style="text-align:right; ">
+							<div class="col-sm"><span class="invoiceTitle">Amount due</span></div>
+							<div class="col-sm" id="invoiceAmount2">$24.20</div>
+						</div>
+					</div>
+				</div>
+				
+				 
+			</div>
+		</div>
+		
+		
+		<div class="row" style="padding-top:50px" th:if="${session.SELECTED_TOKEN != null}">
+			<div class="col-sm">
+				<button class="btn btn-secondary" type="button" style="width:100%" onclick="location.href='/createInvoice2'"><span class="fa fa-chevron-circle-left" /> Previous </button>
+			</div>
+			<div class="col-sm">
+				<button class="btn btn-primary" type="button" onclick="submitInvoice()" style="width:100%">Create invoice in ERP system <span class="fa fa-chevron-circle-right" /> </button>
+			</div>
+		</div>
+	</div>
+	</form>
+
+	<script language="javascript">
+		
+		var formatter = new Intl.NumberFormat('en-US', {
+			  style: 'currency',
+			  currency: 'USD'
+		});
+		
+		function updateLine (parentEl) {
+			var invoiceTotal = 0;
+			var inputs = $(parentEl).find ("input:text");
+			var lineTotal = inputs[0].value * inputs[1].value;
+			
+			parentEl.querySelector("#lineTotal").innerHTML = formatter.format(lineTotal);
+			updateTotal();
+		}
+		
+		function updateTotal () {
+			var invoiceTotal = 0;
+			invoiceTotal += calculateTotalFor ( $("#rowOrigin").find ("input:text") );
+			invoiceTotal += calculateTotalFor ( $("#rowAppender").find ("input:text") );
+			
+			$("#subtotalAmount").html ( formatter.format(invoiceTotal) );
+			var calculatedTax = invoiceTotal * $("#taxInput").val() / 100;
+			$("#calculatedTax").html ( formatter.format(calculatedTax) );
+			$("#invoiceAmount2").html ( formatter.format (invoiceTotal + calculatedTax) );
+			$("#invoiceAmount1").html ( $("#invoiceAmount2").html() );
+		}
+		
+		function calculateTotalFor (inputs) {
+			var myValue = 0;
+			
+			for (var i = 0; i < inputs.length; i++ ) {
+				var rate = inputs[i].value;
+				i++;
+				var qty  = inputs[i].value;
+				
+				myValue += rate * qty;				
+			}
+			return myValue;
+		}
+	
+		function duplicate() {
+		    var rowDiv = $("#rowOrigin").clone().appendTo("#rowAppender");
+			updateTotal();
+		}
+		
+		function submitInvoice() {
+			$("#invoiceForm").attr("action", "/createInvoice4/" + $("#vendorSelection").val() );
+			$("#invoiceForm").submit();
+		}
+
+			
+	</script>
+
+</div>

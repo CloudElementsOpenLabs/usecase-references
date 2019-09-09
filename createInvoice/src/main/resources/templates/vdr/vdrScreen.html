@@ -1,0 +1,44 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		
+		<div class="row" style="padding-top:50px; ">
+			<div class="col-sm-4">
+				<div class="input-group sm-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1">@</span>
+				  </div>
+				  <input type="text" class="form-control" placeholder="Input field" aria-label="Input field" aria-describedby="basic-addon1">
+				</div>
+			</div>
+			
+			
+			<div class="col-sm-4" style="text-align: center; vertical-center: middle">
+				<span class="fa fa-arrows-alt-h" />
+			</div>
+			
+			<div class="col-sm-4">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <label class="input-group-text" for="inputGroupSelect01"><span class="fa fa-tasks"/></label>
+				  </div>
+				  <select class="custom-select" id="inputGroupSelect01">
+				    <option selected>Choose...</option>
+				    <option value="1">One</option>
+				    <option value="2">Two</option>
+				    <option value="3">Three</option>
+				  </select>
+				</div>
+			</div>
+		</div>
+		
+		
+		<div class="row" style="padding-top:25px">
+			<div class="col">
+				<button class="btn btn-primary" style="width:100%"
+				onclick="addField()">Save mapping changes <span class="fa fa-plus-circle" /></button>
+			</div>
+		</div>
+	</div>
+	
+</div>

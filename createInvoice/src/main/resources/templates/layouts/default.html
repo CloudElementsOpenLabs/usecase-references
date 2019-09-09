@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/header :: head"></head>
+<body>
+	<div class="header">
+		<div class="row">
+			<div class="col-sm">
+				<h1>
+					<a href="/" title="Back to first page">
+						<img src="/images/mycompany_logo2.png" style="width:70px; height: 60px"/>
+						<span style="vertical-align:middle; font-weight: bold">MyCompany </span>
+						<span style="vertical-align:middle;" th:text="${ ' - ' + session.PAGETITLE }" />
+					</a>
+				</h1>
+			</div>
+		</div>
+	</div>
+
+   <div class="container">
+   	 <div class="alert alert-info" id="passwordsNoMatchRegister" style="display:none;" th:if="${param.id != null && param.id[0] != null}">
+    	<strong>Object created!</strong> <span th:text="${' Find the object with id ' + param.id[0]}"/> 
+     </div>
+   	
+   	 <div class="alert alert-danger" th:if="${ error != null }">
+    	<strong>An error occurred!</strong> <span th:utext="${error}"/> 
+     </div>
+   	
+   	
+   	
+     <div layout:fragment="content"></div>
+     
+     <div th:replace="fragments/footer :: footer"></div>
+   </div>
+</body>
+</html>

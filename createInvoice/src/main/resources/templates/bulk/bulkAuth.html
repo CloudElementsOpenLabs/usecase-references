@@ -1,0 +1,183 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+	</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div class="row" >
+			<div class="col-sm">
+				<h4 >Authentication</h4>
+				<span class="subtitle">Normalized authentication</span>
+			</div>
+			
+			<div class="col-sm">
+				<h4 >Object selection</h4>
+				<span class="subtitle">GET /objects on the authenticated instance</span>
+			</div>
+			
+			<div class="col-sm">
+				<h4 >Schedule bulk</h4>
+				<span class="subtitle">POST /bulk/{resourceName} and GET /bulk</span>
+			</div>
+		</div>
+		
+		<div class="row" style="overflow: auto; max-height: 400px">
+		<!--  AUTHENTICATION  -->
+			<div class="col-sm" th:if="${ session.SELECTED_TOKEN == null }"> <!--  if not authenticated -->
+			
+				<form id="authenticateForm" method="POST" action="/bulkObjects">
+					<div class="row" style="text-align:center; margin-top:25px">
+						<div class="col-sm-3" th:each="key : ${elementKeys}" style="margin:10px">
+							<img th:src="${'images/' + key + '.svg'}" class="smallLogo sixty" th:id="${key}" onClick="getLogonDetails(this)"/>
+							
+							<button class="btn btn-outline-success btn-sm" 
+									th:title="${session.TOKEN_MAP.get(key)}" 
+									th:if="${session.TOKEN_MAP !=null && session.TOKEN_MAP.get(key) != null}"><span class="fa fa-check"/> </button>
+						</div>
+					</div>
+				</form>
+					
+			</div>
+			
+			<div class="col-sm" th:if="${ session.SELECTED_TOKEN != null }">
+				<div class="row" style="padding-top: 50px">
+					<div class="col-sm" style="text-align: center">
+						<img src="/images/netsuiteerpv2.svg" class="smallLogo" style="border: 1px solid #CCC"/>
+						<br/>
+						<button class="btn btn-outline-success btn-sm"><span class="fa fa-check"/> AUTHENTICATED</button>
+					</div>
+				</div>
+			</div>
+
+
+		<!--  OBJECT SELECTION  -->
+			<div class="col-sm" th:if="${selectedObject == null}">
+				<form id="scheduleBulkForm" method="POST" action="/scheduleBulk/">
+					<input type="hidden" id="selectedResource" name="selectedResource"/>
+				
+					<div class="row" style="text-align:center; margin:auto" th:each="obj : ${ objectList }" >
+						<div class="col-sm" style="text-align:center">		
+							<button class="btn btn-outline-success btn-sm" id="objectButton" type="button"
+							th:text="${ obj }" style="margin: 5px; width:80%;'"
+							th:onclick="${'setSelectedResource(''' + obj + ''');'}" ></button>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="col-sm" th:if="${selectedObject != null}" style="text-align:center; padding-top: 50px;">
+				Selected resource for this bulk call<br/><br/>
+				<button class="btn btn-outline-success btn-sm active" style="width:80%;"><span class="fa fa-check"/> <span th:text="${selectedObject}"/></button>
+			</div>
+			
+			<!-- DOWNLOAD FILE  -->
+			<div class="col-sm">
+				
+				<div class="row" style="text-align:center;  margin-top:25px" th:if="${ bulkStatus != null && bulkStatus.id != null}">
+				
+					Bulk call initiated with ID <b>&nbsp;<span th:text="${bulkStatus.id}" /> </b>&nbsp;for object&nbsp;<span th:text="${selectedObject}" style="font-weight: bold" />. 
+					<input type="hidden" th:value = "${ bulkStatus.id }" id="bulkId"/> 
+					<input type="hidden" th:value = "${ selectedObject }" id="selectedObject"/> 
+					
+					This bulk is currently in status <b th:text="${'&nbsp; ' + bulkStatus.status}" /> 
+					<br/>
+					We are fetching the bulk status every minute and change the status 
+					once the results are available.		
+				
+				<br/><br/>
+				<div id="statusReport" th:if="${bulkStatus != null}">
+					<script language="javascript">
+			      		fetchStatus ( 53923 );
+			      		
+			      		function fetchStatus (id) {
+			    			console.log("doing status fetch for id " + id );
+			    			
+			    			$.getJSON("/fetchBulkStatus/" + id, function(result) { 
+			    				console.log (result);
+			    				var htmlObj = $(el);
+			    				
+			    				if ( result.status != "COMPLETED" ) {
+			    					setTimeout(fetchStatus, 300, id );
+			    					console.log ("RESCHEDULING FETCHSTATUS --== " + result.status + " ==--")
+			    				} else { // DONE - Change message and download bulk data in back end
+			    					$('#downloadBulkButton').removeClass("disabled");
+			    					console.log("BULK = DONE");
+			    					$("#statusPending").display = "none";
+			    					$("#statusCompleted").display = "block";
+			    				}
+			    			} );
+			    		}
+					</script>
+					
+					<div id="statusPending">
+						<i class="fas fa-spinner fa-spin" id="statusReportSpinner"></i> Fetching bulk status from Cloud Elements
+					</div>
+					<div id="statusCompleted">
+						<button id="downloadCompletedButton" type="button" style="display: none" class="btn btn-outline-success btn-sm"><span class="fa fa-check"/> Download completed </button>
+					</div>
+				</div>
+
+				</div>
+				
+			</div>
+
+		</div>
+		
+	
+	
+	
+	<div class="row" style="padding-top:50px; ">
+		<!--  AUTHENTICATION  -->
+			<div class="col-sm" style="text-align: center">
+				<button class="btn btn-primary" id="getObjectsButton" style="width:80%;" th:disabled="${session.SELECTED_TOKEN != null}">1. Get objects <span class="fa fa-angle-double-right"/></button>
+			</div>
+			
+			<div class="col-sm" style="text-align: center">
+				<button class="btn btn-primary" id="scheduleBulkButton" style="width:80%;" th:disabled="${selectedObject != null}">2. Schedule bulk <span class="fa fa-angle-double-right"/></button>
+			</div>
+			
+			<div class="col-sm" style="text-align: center">
+				<button class="btn btn-primary" id="downloadBulkButton" style="width:80%; ">3. Download bulk <span class="fa fa-cloud-download-alt" /></button>
+			</div>
+	</div>
+	
+	
+		<script language="javascript">
+		var previousButton;
+		
+		$(document).ready(function() {
+			$('#scheduleBulkButton').addClass("disabled");
+			
+			$('#getObjectsButton').click(function () {   
+				$('#authenticateForm').submit();
+			 });
+			
+			$('#scheduleBulkButton').click(function () {   
+				console.log ("URL: " + $('#scheduleBulkForm').attr("action") + $("#selectedResource").val());
+				$('#scheduleBulkForm').attr("action", $('#scheduleBulkForm').attr("action") + $("#selectedResource").val());
+				$('#scheduleBulkForm').submit();
+			 });
+			
+			$('button[id^="objectButton"]').click(function(e) {
+				if (previousButton != null) {
+					$(previousButton).removeClass("active");
+				}
+				
+				$(this).addClass("active");
+				$('#scheduleBulkButton').removeClass("disabled");
+				previousButton = this;
+		    })
+		});
+		
+		function setSelectedResource (rsrc) {
+			$("#selectedResource").val( rsrc );
+		}
+		
+		
+		
+	</script>
+</div>

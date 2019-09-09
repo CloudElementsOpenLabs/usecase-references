@@ -1,0 +1,76 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		
+		
+		<div class="row" style="padding-top:50px; ">
+			<div class="col-sm">
+				<h4 >Step 1. Authenticate</h4>
+				
+			
+				<div class="row" style="text-align:center">
+					<div class="col-sm-3" th:each="key : ${elementKeys}">
+						<img th:src="${'images/' + key + '.svg'}" class="smallLogo" th:id="${key}" onClick="getLogonDetails(this)"/>
+						<br/>
+						<button class="btn btn-outline-success btn-sm" 
+								th:title="${session.TOKEN_MAP.get(key)}" 
+								th:if="${session.TOKEN_MAP !=null && session.TOKEN_MAP.get(key) != null}"><span class="fa fa-check"/> AUTHENTICATED</button>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+		
+		<div class="row" style="padding-top:50px; display:none" id="authenticationDetails">
+			<div class="row">
+				<div class="col-sm">
+					<h4><img src="" id="selectedElement" class="superSmallLogo"/> Authenticate to element</h4>
+				</div>
+			</div>
+			
+			<div class="container" id="elementDetails"> </div>
+		</div>
+		
+		<div class="text-center" style="display:none" id="loader">
+		  <div class="spinner-border text-primary" role="status" ></div>
+		</div>
+		
+		
+		
+		
+		<script language="javascript">
+			var prevSelectedElement = "";
+			
+			function getLogonDetails (imgObj) {
+				$("#loader").show();
+				$("#authenticationDetails").hide();
+				
+				$("#elementDetails").load("/elementDetail/" + imgObj.id, function() {
+					$("#" + imgObj.id).addClass("selected");
+					$("#selectedElement").attr("src", $("#" + imgObj.id).attr("src") );
+					$("#authenticationDetails").show();
+					
+					if (prevSelectedElement != "") {
+						$("#" + prevSelectedElement).removeClass("selected");
+					}
+					prevSelectedElement = imgObj.id;
+					$("#loader").hide();
+					$("#authenticationDetails").show();
+				});
+				
+			}
+		</script>
+		
+		
+		
+		<div class="row" style="padding-top:50px" th:if="${session.SELECTED_TOKEN != null}">
+			<div class="col-sm">
+				<button class="btn btn-primary" style="width:100%"
+				onclick="location.href='/createInvoice2'">Next <span class="fa fa-chevron-circle-right" /></button>
+			</div>
+		</div>
+		
+	</div>
+	
+</div>

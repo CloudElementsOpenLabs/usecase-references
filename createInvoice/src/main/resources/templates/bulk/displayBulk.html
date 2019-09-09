@@ -1,0 +1,82 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		
+		<div class="row" style="padding-top:50px; ">
+			<div class="col-sm-4">
+				<h3>Bulk call initiated with ID <span th:text="${bulkStatus.id}" /> </h3>
+				<input type="hidden" th:value = "${ bulkStatus.id }" id="bulkId"/> 
+				<input type="hidden" th:value = "${ selectedObject }" id="selectedObject"/> 
+				
+				This bulk is currently in status <b th:text="${bulkStatus.status}" />. 
+				
+				This page is launching status verification calls every minute and will download the results once the bulk file generation has been completed.		
+			</div>
+			
+			<div id="statusReport" style="display:none;">
+				Fetching bulk status from Cloud Elements
+			</div>
+			
+		</div>
+		
+		
+		<div class="row" style="padding-top:25px">
+			<div class="col">
+				<button type="submit" class="btn btn-primary" style="width:100%"
+				onclick="">List meta data <span class="fa fa-next" /></button>
+			</div>
+		</div>
+	</div>
+	
+	
+	<script language="javascript">
+	
+	$(document).ready(function() {
+		fetchStatus ($("#statusReport"), $("#bulkId").value, $("#selectedObject"));
+	});
+	
+	function fetchStatus (el, id, resource) {
+		console.log("doing status fetch for el " + el + " with id " + id + " and resource " + resource);
+		
+		el.show();
+		
+		$.getJSON("/fetchBulkStatus/" + id, function(result) { 
+			console.log (result);
+			var htmlObj = $(el);
+			
+			if ( result.message != null ) { // Exception occurred
+				console.log ("Exception occurred - " + result.message + " - " + result.error );
+				htmlObj.html("Exception occurred");
+				htmlObj.append(" <i class=\"fa fa-skull-crossbones\"> </i>");
+				htmlObj.removeClass("btn-outline-primary");
+				htmlObj.addClass("btn-danger");
+				htmlObj.prop("onclick", null).off("click");
+				
+			} else if ( result.status == "ABORTED") {
+				console.log ("Bulk " + result.id + " status is " + result.status);
+				htmlObj.html("Bulk aborted");
+				htmlObj.append(" <i class=\"fa fa-skull-crossbones\"> </i>");
+				htmlObj.removeClass("btn-outline-primary");
+				htmlObj.addClass("btn-danger");
+				htmlObj.prop("onclick", null).off("click");
+				
+			} else if ( result.status != "COMPLETED" ) {
+				el.hide ();
+				setTimeout(fetchStatus, 300, el, id, resource );
+			} else { // DONE - Change message and download bulk data in back end
+				console.log ("Bulk " + result.id + " " + result.status + " (" + result.recordsCount + " records)")
+				htmlObj.html("Download completed (" + result.recordsCount + ")");
+				htmlObj.append(" <i class=\"fa fa-check-circle\"> </i>");
+				htmlObj.removeClass("btn-outline-primary");
+				htmlObj.addClass("btn-success");
+				htmlObj.prop("onclick", null).off("click");
+				
+				console.log ("About to process download for " + resource);
+				$.get ("/processDownload/" + result.id + "/" + resource, function(data) {} ); // Call back end to actually download the bulk generated data in the back end and save to session
+				
+			}
+		} );
+	}
+	</script>
+	
+</div>

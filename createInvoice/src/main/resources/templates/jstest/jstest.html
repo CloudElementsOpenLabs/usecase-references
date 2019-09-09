@@ -1,0 +1,40 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+	js page
+
+		<div id="response">
+		xyz
+		</div>
+		
+		<button id="clickme">Click me</button>
+
+	<script language="javascript">
+		$(document).ready ( function () {
+			console.log("clicked ");
+			
+			$.get("/getJSON", function (data) { 
+				
+				console.log (data.data);
+				$("#response").css("background-color","blue");
+
+				var obj = data.data;
+				var objId = obj.dayparts[0].categories[0].products[0].attributes[0].attribute_options[0].pd_id;
+				console.log("--> " + objId );
+				
+				console.log ("Product name: " + prodNameLookup (obj, objId));
+				
+			});
+			
+			console.log ("done");
+		});
+		
+		function prodNameLookup (obj, objId) {
+			for (var i = 0; i < obj.dayparts.length; i++) {
+				if (obj.dayparts[i].pd_id == objId) {
+					return obj.dayparts[i].name_default;
+				}
+			}
+		}
+	</script>
+</div>

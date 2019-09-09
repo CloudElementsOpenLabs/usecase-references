@@ -1,0 +1,21 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<table class="table">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>Name</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="obj : ${ instanceList }">
+					<td th:text="${ obj.id }" />
+					<td th:text="${ obj.name }" />
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+	
+</div>
