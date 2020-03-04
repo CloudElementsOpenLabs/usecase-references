@@ -1,6 +1,7 @@
 package com.cloudelements.demo;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -185,6 +186,7 @@ public class APIResponseTest {
 				"	\"user\": \"notifications@cloud-elements.com\"\n" + 
 				"}";
 	}
+
 	
 	
 	
@@ -248,4 +250,5 @@ public class APIResponseTest {
 				"	\"user\": \"notifications@cloud-elements.com\"\n" + 
 				"}";
 	}
+
 }

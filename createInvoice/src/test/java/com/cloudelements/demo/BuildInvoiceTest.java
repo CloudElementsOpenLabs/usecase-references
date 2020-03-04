@@ -6,8 +6,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
-import com.cloudelements.demo.model.business.Invoice;
-import com.cloudelements.demo.model.business.Product;
+import com.cloudelements.demo.model.InvoiceTwo;
+import com.cloudelements.demo.model.Product;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,8 +57,8 @@ public class BuildInvoiceTest {
 		totalAmount += Integer.valueOf(prod.getQuantity()) * Double.parseDouble(prod.getRate());
 		double total = totalAmount * Double.parseDouble( "21" ) / 100;
 		
-		
-		Invoice myInvoice = new Invoice ();
+
+		InvoiceTwo myInvoice = new InvoiceTwo ();
 		
 		myInvoice.setAmount( String.valueOf(totalAmount) );
 		myInvoice.setCurrency("USD");

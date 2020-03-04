@@ -8,6 +8,7 @@ import lombok.Data;
 public class VDR implements Comparable<VDR> {
 
 	private String id, objectName, level, elementId, vendorName, startDate, isLegacy, clonedFrom, description;
+
 	private VDRField[] fields;
 	
 	@JsonIgnore

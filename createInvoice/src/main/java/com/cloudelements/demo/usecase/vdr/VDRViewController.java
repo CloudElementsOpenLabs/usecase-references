@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.simple.JSONArray;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 import com.cloudelements.demo.model.Instance;
 import com.cloudelements.demo.model.Resource;
@@ -27,6 +29,8 @@ import com.cloudelements.demo.util.HTTPUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.cloudelements.demo.usecase.environment.EnvironmentService;
+import com.cloudelements.demo.util.HTTPUtil;
 
 /*
  * This is the main ViewController for the app
@@ -36,7 +40,6 @@ public class VDRViewController {
 
 	@Autowired
 	private EnvironmentService envService;
-	
 	
 	@RequestMapping("/vdrScreen")
 	public String init(Map<String, Object> model, HttpServletRequest request) throws ClientProtocolException, IOException {
@@ -48,6 +51,7 @@ public class VDRViewController {
 	}
 	
 	/*
+
 	 * Clear all session variables upon init
 	 */
 	private void clearSession (HttpServletRequest request) {
@@ -159,6 +163,13 @@ public class VDRViewController {
 		model.put("metadata", metadataObj);
 		
 		return "vdr/vdrOverview";
+  }
+  
+	 * Call /organizations/objects/definitions to list all VDRs. Note we only care about the names at this stage
+	 */
+	@RequestMapping ("/listVDRs")
+	public String listVDRs (Map<String, Object> model, HttpServletRequest request) {
+		return "vdr/vdrScreen";
 	}
 	
 	/*
@@ -174,8 +185,7 @@ public class VDRViewController {
 	@RequestMapping ("/listInstances")
 	public String listAllInstances (Map<String, Object> model, HttpServletRequest request) throws ParseException {
 		JSONArray instanceArr = HTTPUtil.doGetArrayJSONL(null, "/elements/api-v2/instances");
-		
-		
+	
 		model.put("instanceList", instanceArr);
 		return "vdr/instances";
 	}

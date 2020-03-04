@@ -35,6 +35,7 @@ public class EnvironmentService {
 	
 	
 	public String getAuthorizationHeader () {
+
 		if (env != null) {
 			return "Organization " + env.getProperty(orgProperty) + ", User " + env.getProperty(usrProperty);
 		} else {
@@ -49,5 +50,8 @@ public class EnvironmentService {
 		} else {
 			return urlProperty;
 		}
+
+		return "Organization " + env.getProperty(orgProperty) + ", User " + env.getProperty(usrProperty);
 	}
+	
 }

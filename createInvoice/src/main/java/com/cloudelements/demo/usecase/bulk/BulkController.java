@@ -78,7 +78,8 @@ public class BulkController {
 	//TODO REMOVE ME
 	public static String getToken(HttpServletRequest request) {
 		String token = (String) request.getSession().getAttribute("SELECTED_TOKEN");
-		token = "T5VacyttBfsFd3vKGSTjCcQuqNS12ImmOzo1xEEEdLg=";
+
+		token = "FORCE_YOUR_TOKEN_IN";
 		return token;
 	}
 
