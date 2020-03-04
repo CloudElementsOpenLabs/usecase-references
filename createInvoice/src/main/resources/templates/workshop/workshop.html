@@ -1,0 +1,145 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div id="loading" class="loading" >Loading&#8230;</div>
+		
+	
+		<div class="row" style="padding-top:50px; ">
+<!--  QBO -->	
+			<div class="col-sm-6"  style="text-align: center" >
+				<div class="row" >
+					<div class="col-sm-12" >
+						<img src="/images/quickbooks.svg" class="smallLogo"/>
+					</div>
+				</div>
+				
+			
+				<div class="row" >
+					<div class="col-sm-12" >
+						<div class="input-group sm-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="basic-addon1"><span class="fa fa-unlock-alt"/></span>
+						  </div>
+						  <input type="text" class="form-control" id="qboInstanceTokenField" placeholder="Cloud elements instance token" aria-label="Input field" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+				
+			
+				<div class="row" style="padding: 10px 0px 10px 0px">
+					<div class="col-sm-12" >
+						<div class="input-group sm-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="basic-addon1"><span class="fa fa-link"/></span>
+						  </div>
+						  <input type="text" class="form-control" id="qboAPIResourceField" placeholder="API Resource" aria-label="Input field" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+				
+
+				<div class="row" style="padding-top:25px">
+					<div class="col">
+						<button class="btn btn-primary" style="width:100%" id="qboButton"><span class="fa fa-bolt" /> Run resource API call to Cloud Elements</button>
+					</div>
+				</div>
+				
+				
+				<div class="row" style="padding-top:10px; text-align:left; font-size:10px">
+					<div class="col-sm-12"  style="padding:10px;" >
+						<div id="qboResponse"> </div>
+					</div>
+				</div>				
+			</div>
+			
+			
+			
+			
+<!--  SFDC -->			
+			<div class="col-sm-6"  style="text-align: center">
+				<div class="row" >
+					<div class="col-sm-12" >
+						<img src="/images/salesforce2.png" class="smallLogo"/>
+					</div>
+				</div>
+				
+				<div class="row" >
+					<div class="col-sm-12" >
+						<div class="input-group sm-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="basic-addon1"><span class="fa fa-unlock-alt"/></span>
+						  </div>
+						  <input type="text" class="form-control" id="sfdcInstanceTokenField" placeholder="Cloud elements instance token" aria-label="Input field" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+				
+				<div class="row"  style="padding: 10px 0px 10px 0px">
+					<div class="col-sm-12" >
+						<div class="input-group sm-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="basic-addon1"><span class="fa fa-link"/></span>
+						  </div>
+						  <input type="text" class="form-control" id="sfdcAPIResourceField" placeholder="API Resource" aria-label="Input field" aria-describedby="basic-addon1">
+						</div>
+					</div>
+				</div>
+				
+				<div class="row" style="padding-top:25px">
+					<div class="col">
+						<button class="btn btn-primary" style="width:100%" id="sfdcButton"><span class="fa fa-bolt" /> Run resource API call to Cloud Elements</button>
+					</div>
+				</div>
+				
+				
+				<div class="row" style="padding-top:10px; text-align:left; font-size:10px">	
+					<div class="col-sm-12"  style="padding:10px;" >
+						<div id="sfdcResponse"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+		<script language="javascript">
+
+			$(function () {
+				stopLoading();
+
+				$("#qboButton").click (function () { callRestController(this.id); });
+				$("#sfdcButton").click (function () { callRestController(this.id); });
+			});
+			
+			
+			function callRestController(buttonId) {
+				startLoading();
+
+				var responseField 	= $("#" + buttonId.replace("Button", "Response"));
+				var instanceToken 	= $("#" + buttonId.replace("Button", "InstanceTokenField")).val();
+				var apiResource 	= $("#" + buttonId.replace("Button", "APIResourceField")).val();
+				
+				$.get("/resourceCall/" + instanceToken + "/" + apiResource, function (data) { 
+					console.log (data);
+					
+					responseField.html ("");
+					$.each (data, function (i, item) {
+						responseField.append( "<br/>" + JSON.stringify(data[i]) );
+					});
+					
+					stopLoading();
+				});
+			}
+			
+			function startLoading() {
+				$("#loading").show();
+			}
+			
+			function stopLoading() {
+				$("#loading").hide();
+			}
+			
+		</script>
+	
+</div>

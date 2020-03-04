@@ -1,0 +1,9 @@
+target/
+logs/
+
+.classpath
+.project
+.settings
+mvnw
+mvnw.cmd
+application.properties

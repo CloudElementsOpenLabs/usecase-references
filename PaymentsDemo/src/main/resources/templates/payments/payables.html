@@ -1,0 +1,95 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+		a { color: #fff; }
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div class="row" th:if="${ message != null }" style="margin-bottom: 20px">
+			<div class="col-sm">
+				<div class="alert alert-info" role="alert" th:text="${ message }"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm">
+				<h1>Payable statement summary</h1>
+			</div>		
+			<div class="col-sm" style="text-align: right">
+				Total payments amount
+				<h3 id="totalValue" th:text="${total}" />
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm">
+				<table style="width: 100%" id="payablesTable">
+					<thead>
+						<th>Due date</th>
+						<th>Invoice #</th>
+						<th>Vendor ID</th>
+						<th>Vendor name</th>
+						<th>Payment type</th>
+						<th>Payment amount</th>
+					</thead>
+					<tbody>
+					<tr th:each="payableObj : ${ payableList }">
+						<td th:text="${ payableObj.get('dueDate') }" />
+						<td th:text="${ payableObj.get('id') }" />
+						<td th:text="${ payableObj.get('vendorId') }" />
+						<td th:text="${ payableObj.get('vendorName') }" />
+						<td >VIRTUAL CARD </td>
+						<td th:text="${ payableObj.get('total') + ' ' + payableObj.get('currency') }" />
+						<td>
+							<button class="btn btn-primary" style="width:100%"><a th:href="${ 'doPayment/' + payableObj.get('id') }">Make payment</a></button>
+						</td>
+					</tbody>
+					</tr>				
+				</table>
+			</div>
+		</div>
+	</div>
+	
+	<script language="javascript">
+	
+	$(document).ready(function() {
+		getPayablesList();
+	});
+	
+	function getPayablesList() {
+		console.log("Getting session payables");
+		
+		var total = 0.0;
+		$.getJSON("/getSessionPayables", function(result) { 
+
+			for (var i=0; i < result.length; i++) {
+				console.log ("Item " + i + result[i]);
+				console.log (result[i].total + " " + result[i].currency);
+				
+				var body = "<tr>" +
+						"<td>" + result[i].dueDate + "</td>" +
+						"<td>" + result[i].id + "</td>" +
+						"<td>" + result[i].vendorId + "</td>" +
+						"<td>" + result[i].vendorName + "</td>" +
+						"<td>VIRTUAL CARD</td>" +
+						"<td>" + results[i].total + " " + result[i].currency + "</td>" +
+						"<td><button class=\"btn btn-secondary\"><a>Make payment</a></button></td>" +
+					"</tr>";
+				
+				$("table tbody").append(body);
+				
+				total += Number(result[i].total);
+			}
+			$("#totalValue").html(total + " USD");
+			
+			
+		} );
+		setTimeout(function() { getPayablesList() }, 3000);
+	}
+	</script>
+
+</div>

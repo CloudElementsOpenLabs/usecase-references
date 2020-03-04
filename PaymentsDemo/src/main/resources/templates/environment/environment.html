@@ -1,0 +1,66 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<H3>Set your Cloud Elements environment details </H3>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div class="row" th:if="${ confirmation != null }" style="margin-top: 25px">
+			<div class="col-sm">
+				<div class="alert alert-danger" role="alert" >
+				<span  style="font-weight: bold" >Important!</span>  <span th:text="${ confirmation }" /> <br/><br/>
+				<a href="/environment">Click here after you restarted.</a>
+				</div>
+			</div>
+		</div>
+			
+		
+		<form method="POST" action="/updateEnvironment" th:if="${ confirmation == null }">
+			<div class="row" style="padding-top:50px; ">
+				<div class="col-sm">
+					<p style="font-style:italic">Note that you can also set these variables manually in the application.properties file. Make sure to restart your environment afterwards.</p>
+				
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
+							  </div>
+							  <input type="text" class="form-control" aria-describedby="text-link" name="url" th:value="${ url }" placeholder="Cloud Elements API URL"/>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="text-link"><span class="fa fa-rocket" /></span>
+							  </div>
+							  <input type="text" class="form-control" aria-describedby="text-link" name="organization" th:value="${ organization }" placeholder="Cloud Elements organization token"/>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="text-link"><span class="fa fa-user" /></span>
+							  </div>
+							  <input type="text" class="form-control" aria-describedby="text-link" name="user" th:value="${ user }" placeholder="Cloud Elements user secret"/>
+							</div>
+						</div>
+					</div>				
+				</div>
+			</div>
+		
+			
+			<div class="row" style="padding-top:50px">
+				<div class="col-sm">
+					<button class="btn btn-primary" style="width:100%"><span class="fa fa-chevron-circle-right" /> Update environment details</button>
+				</div>
+			</div>
+		</form>
+		
+	</div>
+	
+</div>

@@ -1,4 +1,4 @@
-package com.cloudelements.demo.model;
+package com.cloudelements.demo.model.business;
 
 import lombok.Data;
 
