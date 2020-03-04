@@ -28,7 +28,7 @@ public class PaymentsViewController {
 	private EnvironmentService envService;
 	
 	
-	@RequestMapping("/paymentsInit")
+	@RequestMapping(value = {"/", "/init"} )
 	public String init(Map<String, Object> model, HttpServletRequest request) throws ClientProtocolException, IOException {
 		if (!envService.cePropertiesAvailable()) {
 			model.put("error", "Please set your Cloud Elements environment variables before you continue. Go to <a href='/environment'>the environment page</a> to do so.");
