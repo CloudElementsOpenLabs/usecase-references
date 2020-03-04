@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-public class VDR {
+public class VDR implements Comparable<VDR> {
 
-	private String id, objectName, level, elementId, vendorName, startDate, isLegacy;
+	private String id, objectName, level, elementId, vendorName, startDate, isLegacy, clonedFrom, description;
+
 	private VDRField[] fields;
 	
 	@JsonIgnore
@@ -24,5 +25,11 @@ public class VDR {
 		}
 		
 		return null;
+	}
+
+
+	@Override
+	public int compareTo(VDR o) {
+		return this.objectName.compareTo(o.objectName);
 	}
 }

@@ -35,10 +35,23 @@ public class EnvironmentService {
 	
 	
 	public String getAuthorizationHeader () {
-		return "Organization " + env.getProperty(orgProperty) + ", User " + env.getProperty(usrProperty);
+
+		if (env != null) {
+			return "Organization " + env.getProperty(orgProperty) + ", User " + env.getProperty(usrProperty);
+		} else {
+			return "Organization " + orgProperty + ", User " + usrProperty;
+		}
+			
 	}
 	
 	public String getURL () {
-		return env.getProperty(urlProperty);
+		if (env != null) {
+			return env.getProperty(urlProperty);
+		} else {
+			return urlProperty;
+		}
+
+		return "Organization " + env.getProperty(orgProperty) + ", User " + env.getProperty(usrProperty);
 	}
+	
 }

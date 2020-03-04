@@ -1,5 +1,7 @@
 package com.cloudelements.demo;
 
+import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -184,4 +186,69 @@ public class APIResponseTest {
 				"	\"user\": \"notifications@cloud-elements.com\"\n" + 
 				"}";
 	}
+
+	
+	
+	
+
+	@Test
+	public void parseObjectIdFromEvent() throws ParseException, JsonParseException, JsonMappingException, IOException {
+		Object obj 			= new JSONParser().parse(getEventsPayload());
+		JSONObject jsonObj 	= (JSONObject) obj;
+		jsonObj 			= (JSONObject) jsonObj.get("message");
+		
+		JSONArray eventsArr = (JSONArray) jsonObj.get("events");
+		String objectId = String.valueOf(((JSONObject) eventsArr.get(0)).get("objectId"));
+		
+		String invoiceId = objectId.substring(0, objectId.indexOf("|"));
+		
+		assertEquals("2", invoiceId);
+	}
+	
+	
+	public String getEventsPayload() {
+		return "{\n" + 
+				"	\"severity\": \"medium\",\n" + 
+				"	\"createdDate\": \"Fri Feb 21 16:43:41 UTC 2020\",\n" + 
+				"	\"topic\": \"instance-8948659-quickbooks-events\",\n" + 
+				"	\"action\": \"create\",\n" + 
+				"	\"id\": \"69182068\",\n" + 
+				"	\"message\": {\n" + 
+				"		\"elementKey\": \"quickbooks\",\n" + 
+				"		\"accountId\": 643,\n" + 
+				"		\"eventId\": \"AXBooiL_qrZEur0mJV08\",\n" + 
+				"		\"companyId\": 280,\n" + 
+				"		\"instanceId\": 8948659,\n" + 
+				"		\"instance_id\": 8948659,\n" + 
+				"		\"instanceName\": \"Demoday\",\n" + 
+				"		\"instanceTags\": [\"Demoday\"],\n" + 
+				"		\"raw\": {\n" + 
+				"			\"invoices\": [{\n" + 
+				"				\"balance\": 10000,\n" + 
+				"				\"id\": \"2|0\",\n" + 
+				"				\"allowIPNPayment\": false,\n" + 
+				"				\"objectId\": \"2|0\",\n" + 
+				"				\"systemId\": \"2\",\n" + 
+				"				\"printStatus\": \"NOT_SET\",\n" + 
+				"				\"eventType\": \"CREATED\",\n" + 
+				"				\"salesTermRef\": {\n" + 
+				"					\"value\": \"3\"\n" + 
+				"				}\n" + 
+				"			}]\n" + 
+				"		},\n" + 
+				"		\"userId\": 2374,\n" + 
+				"		\"events\": [{\n" + 
+				"			\"date\": \"2020-02-21T16:43:41Z\",\n" + 
+				"			\"elementKey\": \"quickbooks\",\n" + 
+				"			\"pollDate\": \"2020-02-21T16:43:39Z\",\n" + 
+				"			\"eventType\": \"CREATED\",\n" + 
+				"			\"hubKey\": \"finance\",\n" + 
+				"			\"objectId\": \"2|0\",\n" + 
+				"			\"objectType\": \"invoices\"\n" + 
+				"		}]\n" + 
+				"	},\n" + 
+				"	\"user\": \"notifications@cloud-elements.com\"\n" + 
+				"}";
+	}
+
 }

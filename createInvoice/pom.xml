@@ -88,6 +88,14 @@
 		    <artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
 				
+
+	
+	<dependency>
+    <groupId>com.turo</groupId>
+    <artifactId>pushy</artifactId>
+    <version>0.13.8</version>
+</dependency>
+	
 	</dependencies>
 
 	<build>

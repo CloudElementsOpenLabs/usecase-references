@@ -33,6 +33,9 @@ public class EnvironmentViewController {
 	public String welcome(Map<String, Object> model, HttpServletRequest request) throws IOException {
 		setPropertiesTo(model);
 		
+
+		request.getSession().setAttribute("PAGETITLE", "Environment details");
+		
 		return "environment/environment";
 	}
 	

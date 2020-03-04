@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.cloudelements.demo.model.InvoiceTwo;
 import com.cloudelements.demo.model.Product;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,7 +57,7 @@ public class BuildInvoiceTest {
 		totalAmount += Integer.valueOf(prod.getQuantity()) * Double.parseDouble(prod.getRate());
 		double total = totalAmount * Double.parseDouble( "21" ) / 100;
 		
-		
+
 		InvoiceTwo myInvoice = new InvoiceTwo ();
 		
 		myInvoice.setAmount( String.valueOf(totalAmount) );

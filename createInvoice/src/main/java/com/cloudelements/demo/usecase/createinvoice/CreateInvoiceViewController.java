@@ -26,6 +26,7 @@ import com.cloudelements.demo.model.ConfigurationField;
 import com.cloudelements.demo.model.Element;
 import com.cloudelements.demo.model.ElementConfiguration;
 import com.cloudelements.demo.model.ElementConfigurationOption;
+
 import com.cloudelements.demo.model.InvoiceTwo;
 import com.cloudelements.demo.model.Product;
 import com.cloudelements.demo.usecase.authentication.AuthenticationController;
@@ -72,7 +73,7 @@ public class CreateInvoiceViewController {
 		/* 
 		 * Add any element key from the catalog to this array to make it appear on the UI 
 		 * */
-		String[] elementKeys = { "netsuiteerpv2", "freshbooksv2", "quickbooks", "intacct", "sfdc" };
+		String[] elementKeys = { "netsuiteerpv2", "freshbooksv2", "quickbooks", "intacct" };
 		model.put("elementKeys", elementKeys);
 		
 		model.put("configurationField", new ConfigurationField());
@@ -81,6 +82,10 @@ public class CreateInvoiceViewController {
 		/* 
 		 * This should be the real code instead of putting in the netsuiteToken by default
 		 */
+		String netsuiteToken = "_COMPLETE_TOKEN_";
+		HashMap<String, String> tokenMap = new HashMap<String, String>();
+		tokenMap.put("netsuiteerpv2", netsuiteToken);
+		
 		if (request.getParameter("token") != null) { // CE Instance token received // element instance successfully created
 			request.getSession().setAttribute("SELECTED_TOKEN", request.getParameter("token").toString());
 		}

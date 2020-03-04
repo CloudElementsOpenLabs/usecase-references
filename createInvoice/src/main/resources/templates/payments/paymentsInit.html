@@ -1,0 +1,36 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+	</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		<div class="row">
+		<!--  AUTHENTICATION  -->
+			<div class="col-sm"> 
+			
+				<form id="authenticateForm" method="POST" action="/getPayables">
+					<div class="row" style="text-align:center; margin-top:25px">
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
+						  </div>
+						  <input type="text" class="form-control" aria-describedby="text-link" name="token" th:value="${ session.TOKEN }" placeholder="Element instance token"/>
+						</div>
+					</div>
+					
+					<div class="row" style="text-align:center; margin-top:25px">
+						<button class="btn btn-primary" style="width: 100%">Get payables</button>
+					</div>
+					
+				</form>
+					
+			</div>
+			
+		</div>
+		
+	</div>
+
+</div>
