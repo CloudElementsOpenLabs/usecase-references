@@ -21,9 +21,10 @@
 			</div>		
 			<div class="col-sm" style="text-align: right">
 				Total payments amount
-				<h3 id="totalValue" th:text="${total}" />
+				<h3 id="totalValue" th:text="${ total }" />
 			</div>
 		</div>
+		
 		
 		<div class="row">
 			<div class="col-sm">
@@ -35,6 +36,7 @@
 						<th>Vendor name</th>
 						<th>Payment type</th>
 						<th>Payment amount</th>
+						<th>Status</th>
 					</thead>
 					<tbody>
 					<tr th:each="payableObj : ${ payableList }">
@@ -44,6 +46,7 @@
 						<td th:text="${ payableObj.get('vendorName') }" />
 						<td >VIRTUAL CARD </td>
 						<td th:text="${ payableObj.get('total') + ' ' + payableObj.get('currency') }" />
+						<td th:text="${ payableObj.get('status') }" />
 						<td>
 							<button class="btn btn-primary" style="width:100%"><a th:href="${ 'doPayment/' + payableObj.get('id') }">Make payment</a></button>
 						</td>
@@ -64,7 +67,7 @@
 		console.log("Getting session payables");
 		
 		var total = 0.0;
-		$.getJSON("/getSessionPayables", function(result) { 
+		$.getJSON("/getPaymentDataFromService", function(result) { 
 
 			for (var i=0; i < result.length; i++) {
 				console.log ("Item " + i + result[i]);
@@ -76,7 +79,8 @@
 						"<td>" + result[i].vendorId + "</td>" +
 						"<td>" + result[i].vendorName + "</td>" +
 						"<td>VIRTUAL CARD</td>" +
-						"<td>" + results[i].total + " " + result[i].currency + "</td>" +
+						"<td>" + result[i].total + " " + result[i].currency + "</td>" +
+						"<td>" + result[i].status + "</td>" +
 						"<td><button class=\"btn btn-secondary\"><a>Make payment</a></button></td>" +
 					"</tr>";
 				
@@ -88,7 +92,7 @@
 			
 			
 		} );
-		setTimeout(function() { getPayablesList() }, 3000);
+		setTimeout(function() { getPayablesList() }, 30000);
 	}
 	</script>
 

@@ -2,34 +2,101 @@
 	<style>
 		H4 { border-right: 1px solid #CCC; }
 		.subtitle { font-style: italic; font-size: 9px;}
+		
+		.connectionOption {
+			border: 1pix solid #CCC;
+			text-align: center;
+			margin-top: 20px;
+		}
+		
+		.appTitle {font-size: 28px; font-weight: medium; margin-top: 25px; margin-bottom:0px; padding-bottom:0px; text-align: left}
+		
+		.appSubTitle {margin:0px; padding:0px; font-size:18px; font-weight: light; text-align: left}
+		
+		.connectButton {width: 100%}
 	</style>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 
 	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
 		<div class="row">
-		<!--  AUTHENTICATION  -->
-			<div class="col-sm"> 
-			
-				<form id="authenticateForm" method="POST" action="/getPayables">
-					<div class="row" style="text-align:center; margin-top:25px">
-						<div class="input-group mb-3">
-						  <div class="input-group-prepend">
-						    <span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
-						  </div>
-						  <input type="text" class="form-control" aria-describedby="text-link" name="token" th:value="${ session.TOKEN }" placeholder="Element instance token"/>
-						</div>
-					</div>
-					
-					<div class="row" style="text-align:center; margin-top:25px">
-						<button class="btn btn-primary" style="width: 100%">Get payables</button>
-					</div>
-					
-				</form>
-					
+			<div class="col-sm">
+				<h1>Connect your favorite ERP to our portal</h1>
+				<h3>Automatically pull in all your payables and initiate payments</h3>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm connectionOption">
+				<img src="/images/netsuiteerpv2.svg" class="logo"/> <br/>
+				<p class="appTitle">Netsuite ERP</p>
+				<p class="appSubTitle">Taking small business to new heights</p>
 			</div>
 			
+			<div class="col-sm connectionOption">
+				<img src="/images/quickbooks.svg" class="logo"/> <br/>
+				<p class="appTitle">Quickbooks online</p>
+				<p class="appSubTitle">Less time on accounting, more on what you love</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/xero.svg" class="logo"/> <br/>
+				<p class="appTitle">Xero</p>
+				<p class="appSubTitle">Online accounting software for your small business</p>
+			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/netsuite'">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/qbo'">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/xero'">Connect</button></p>
+			</div>
+		</div>
+		
+		
+		
+		
+				<div class="row" style="margin-top: 80px;">
+			<div class="col-sm connectionOption">
+				<img src="/images/freshbooksv2.svg" class="logo"/> <br/>
+				<p class="appTitle">Freshbooks</p>
+				<p class="appSubTitle">All-in-one small business invoicing and accounting solution</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/sapbusinessone.svg" class="logo"/> <br/>
+				<p class="appTitle">SAP Business one</p>
+				<p class="appSubTitle">ERP Software for small businesses</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/exact.png" class="logo"/> <br/>
+				<p class="appTitle">Exact online</p>
+				<p class="appSubTitle">Exact supports ambitious businesses</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-secondary connectButton" disabled>Coming soon</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-secondary connectButton" disabled>Coming soon</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-secondary connectButton" disabled>Coming soon</button></p>
+			</div>
+		</div>
+		
 		
 	</div>
 

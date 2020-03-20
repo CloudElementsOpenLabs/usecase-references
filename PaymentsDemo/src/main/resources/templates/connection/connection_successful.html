@@ -1,0 +1,61 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+		
+		.connectionOption {
+			border: 1pix solid #CCC;
+			text-align: center;
+			margin-top: 20px;
+		}
+		
+		.appTitle {font-size: 28px; font-weight: medium; margin-top: 25px; margin-bottom:0px; padding-bottom:0px; text-align: left}
+		
+		.appSubTitle {margin:0px; padding:0px; font-size:18px; font-weight: light; text-align: left}
+		
+		.connectButton {width: 100%}
+	</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		<div class="row">
+			<div class="col-sm">
+				<h1><span class="fa fa-check"></span> You successfully connected your ERP to our portal</h1>
+				<h3>Automatically pull in all your payables and initiate payments</h3>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-sm">
+				<p>Session token <span th:text="${session.SELECTED_TOKEN} "/> </p>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm">
+				<img src="/images/qbo_full.png" style="width: 40%"/> <br/>
+				<p class="appTitle">Quickbooks online</p>
+				<p class="appSubTitle">Less time on accounting, more on what you love</p>
+			</div>
+			
+		</div>
+
+		<div class="row">
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="vendorButton" onclick="location.href='/getVendors'">Get vendor data</button></p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/getPayables'">Get payables</button></p>
+			</div>
+		</div>
+		
+		
+		
+		
+		
+	</div>
+
+</div>
