@@ -29,6 +29,8 @@ public class PaymentsViewController {
 	@Autowired
 	private PaymentDataService dataService;
 	
+	private static DecimalFormat df2 = new DecimalFormat("###,###,###.##");
+	
 	@RequestMapping(value = {"/", "/init"} )
 	public String init(Map<String, Object> model, HttpServletRequest request) throws ClientProtocolException, IOException {
 		if (!envService.cePropertiesAvailable()) {
@@ -36,7 +38,6 @@ public class PaymentsViewController {
 		}
 		
 		request.getSession().putValue( "PAGETITLE", "Payables portal" );
-		request.getSession().putValue("TOKEN", "YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=");
 		
 		return "payments/paymentsInit";
 	}
@@ -51,24 +52,26 @@ public class PaymentsViewController {
 		for (int i = 0; i < payables.size(); i++) {
 			JSONObject payablesObj = (JSONObject) payables.get (i);
 			
+			payablesObj.put("totalStr", df2.format( Double.parseDouble( payablesObj.get("total").toString() )) );
+			
 			payableList.add(payablesObj);
 		}
 		
 		model.put("payableList", payableList);
-		model.put("total", calculateTotal (payableList) + " " + payableList.get(0).get("currency"));
+		model.put("totalOutstanding", String.valueOf( df2.format( Double.parseDouble(String.valueOf(calculateTotal (payableList) ))) ) + " " + payableList.get(0).get("currency"));
 		request.getSession().setAttribute("PAYABLELIST", payableList);
 		
 		return "payments/payables";
 	}
 	
-	private String calculateTotal (List<JSONObject> objList) {
+	private Double calculateTotal (List<JSONObject> objList) {
 		double total = 0;
 		for (JSONObject obj : objList) {
 			total += Double.parseDouble(obj.get("total").toString());
 		}
 		
-        DecimalFormat df = new DecimalFormat("#.##");
-		return df.format(total);
+        
+		return total;
 	}
 	
 	@RequestMapping("/doPayment/{invoiceId}")

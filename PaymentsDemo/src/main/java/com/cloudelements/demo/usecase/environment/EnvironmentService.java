@@ -22,9 +22,9 @@ public class EnvironmentService {
 	private String orgProperty = "cloudelements.organization";
 	private String usrProperty = "cloudelements.user";
 	
-	private String callbackURL = "https://bd325c43.ngrok.io";
+	private String callbackURL = "https://0126c6c0.ngrok.io";
 	
-	private String qboToken = "zlCLbYM6/9oNDsMnYdplc6nMwBLI/M3eZXKNPgA0/Z4=";
+	private String qboToken = "";
 	
 	public String getURLFriendlyQBO() {
 		return qboToken.replaceAll("/", "_-_");

@@ -21,7 +21,7 @@
 			</div>		
 			<div class="col-sm" style="text-align: right">
 				Total payments amount
-				<h3 id="totalValue" th:text="${ total }" />
+				<h3 id="totalValue" th:text="${ totalOutstanding }" />
 			</div>
 		</div>
 		
@@ -41,11 +41,13 @@
 					<tbody>
 					<tr th:each="payableObj : ${ payableList }">
 						<td th:text="${ payableObj.get('dueDate') }" />
-						<td th:text="${ payableObj.get('id') }" />
+						<td>
+							<a th:href="${'https://c8.qbo.intuit.com/app/invoice?txnId=' + payableObj.get('id')}" th:text="${ payableObj.get('id') }" target="_blank" style="color: #000" />
+						</td>
 						<td th:text="${ payableObj.get('vendorId') }" />
 						<td th:text="${ payableObj.get('vendorName') }" />
 						<td >VIRTUAL CARD </td>
-						<td th:text="${ payableObj.get('total') + ' ' + payableObj.get('currency') }" />
+						<td th:text="${ payableObj.get('currency') + ' ' + payableObj.get('totalStr') }" />
 						<td th:text="${ payableObj.get('status') }" />
 						<td>
 							<button class="btn btn-primary" style="width:100%"><a th:href="${ 'doPayment/' + payableObj.get('id') }">Make payment</a></button>
@@ -88,7 +90,7 @@
 				
 				total += Number(result[i].total);
 			}
-			$("#totalValue").html(total + " USD");
+			//$("#totalValue").html(total + " USD");
 			
 			
 		} );

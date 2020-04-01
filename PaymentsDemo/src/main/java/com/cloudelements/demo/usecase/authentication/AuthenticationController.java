@@ -90,8 +90,6 @@ public class AuthenticationController {
 					 * https://docs.cloud-elements.com/home/freshbooks-cloud-accounting-authenticate-snippettermelementucarticle
 					 */
 			
-			request.getSession().setAttribute("SELECTED_TOKENX", envService.getQBOToken() );
-			
 			response.sendRedirect("http://localhost:8080/connection_successful/" + envService.getURLFriendlyQBO());
 		} catch (Exception e) {
 			e.printStackTrace();

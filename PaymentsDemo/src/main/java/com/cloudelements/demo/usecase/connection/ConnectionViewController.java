@@ -44,8 +44,8 @@ public class ConnectionViewController {
 	public String requestRedirect(Map<String, Object> model, HttpServletRequest request, @PathVariable String elementKey) throws ClientProtocolException, IOException, ParseException {
 		
 		String url = authenticationController.handleOAuth2Authentication("40", 
-				"ABZz7jqsLtIiEG3nbLvTLgKGDfL5XOzaB1YZqMzx0zpuslWTML", 
-				"gZdl4ewOhBNmkDxXKBN10I7lB7L6uCAWgpbrTqPe", 
+				"YOUR_QBO_APP_TOKEN", 
+				"YOUR_QBO_APP_SECRET", 
 				envService.getCallbackBaseURL() + "/handleOAuthCallback",
 				"&scope=com.intuit.quickbooks.accounting&authentication.type=oauth2");
 		
