@@ -1,5 +1,5 @@
 # Video 
-[See a walkthrough video for the contents of this repo](src/main/resources/demobank_walkthrough.mp4) 
+[Download a walkthrough video for the contents of this repo](src/main/resources/demobank_walkthrough.mp4) 
 
 
 # Getting started
