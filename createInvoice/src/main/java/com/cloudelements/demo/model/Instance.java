@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class Instance implements Comparable<Instance> {
 
+
 	private String id, name, createdDate, token,type, elementId;
 	
 	@JsonIgnore

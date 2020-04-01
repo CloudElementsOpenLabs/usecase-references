@@ -26,8 +26,9 @@ import com.cloudelements.demo.model.ConfigurationField;
 import com.cloudelements.demo.model.Element;
 import com.cloudelements.demo.model.ElementConfiguration;
 import com.cloudelements.demo.model.ElementConfigurationOption;
-import com.cloudelements.demo.model.business.Invoice;
-import com.cloudelements.demo.model.business.Product;
+
+import com.cloudelements.demo.model.InvoiceTwo;
+import com.cloudelements.demo.model.Product;
 import com.cloudelements.demo.usecase.authentication.AuthenticationController;
 import com.cloudelements.demo.usecase.bulk.BulkController;
 import com.cloudelements.demo.usecase.bulk.BulkService;
@@ -54,7 +55,7 @@ public class CreateInvoiceViewController {
 	private AuthenticationController authController;
 	
 	/*
-	 * Returns the first page of the invoice creation procress - the authentication page
+	 * Returns the first page of the invoice creation process - the authentication page
 	 * Notice it adds the elementKeys array onto the model, that's what is used in the UI to display the logos and logon details
 	 * 
 	 * Add any other element key to this array and refresh the page
@@ -81,12 +82,10 @@ public class CreateInvoiceViewController {
 		/* 
 		 * This should be the real code instead of putting in the netsuiteToken by default
 		 */
-		
-		String netsuiteToken = "fmZ42Q1kvpfp7eAXV0ozRIonJIA2jHXlaWEoHcDAVNY=";
+		String netsuiteToken = "_COMPLETE_TOKEN_";
 		HashMap<String, String> tokenMap = new HashMap<String, String>();
 		tokenMap.put("netsuiteerpv2", netsuiteToken);
 		
-		request.getSession().setAttribute("SELECTED_TOKEN", netsuiteToken);
 		if (request.getParameter("token") != null) { // CE Instance token received // element instance successfully created
 			request.getSession().setAttribute("SELECTED_TOKEN", request.getParameter("token").toString());
 		}
@@ -134,7 +133,7 @@ public class CreateInvoiceViewController {
 		double total = totalAmount * Double.parseDouble( vatPercentage ) / 100;
 		
 
-		Invoice myInvoice = new Invoice ();
+		InvoiceTwo myInvoice = new InvoiceTwo ();
 		
 		myInvoice.setAmount( String.valueOf(totalAmount) );
 		myInvoice.setCurrency("1");

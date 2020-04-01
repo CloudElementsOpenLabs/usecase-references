@@ -11,5 +11,6 @@ public class VDRField implements Comparable<VDRField> {
 	public int compareTo(VDRField o) {
 		return this.path.compareTo(o.getPath());
 	}
+
 	
 }

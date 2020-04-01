@@ -1,6 +1,7 @@
 package com.cloudelements.demo.usecase.eventhandling;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cloudelements.demo.util.HTTPUtil;
+import com.cloudelements.demo.model.APIEvent;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  * This restcontroller allows the app to always listen for incoming EVENTS.
@@ -34,27 +36,14 @@ public class APIResponseController {
 	private static final Logger logger = LoggerFactory.getLogger(APIResponseController.class);	
 	
 	@RequestMapping(value="/apiResponse", method=RequestMethod.POST)
+
 	public void handleAPIResponse(@RequestBody String payload, HttpServletRequest request) throws ParseException, JsonParseException, JsonMappingException, IOException {
 		Object obj 			= new JSONParser().parse(payload);
 		JSONObject jsonObj 	= (JSONObject) obj;
 		jsonObj 			= (JSONObject) jsonObj.get("message");
 		
-		/*logger.debug("*** Received event *** \n" + payload);
-		
-		
-		JSONArray eventsArr = (JSONArray) jsonObj.get("events");
-		
-		for (int i = 0; i < eventsArr.size(); i++) {
-			JSONObject currObject = (JSONObject) eventsArr.get(i);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			APIEvent apiEvent = mapper.readValue (currObject.toJSONString(), APIEvent.class);
-			
-			logger.debug("**** EVENT " + i + " ****");
-			logger.debug(apiEvent.getObjectType() + " " + apiEvent.getEventType() + " with id " + apiEvent.getObjectId());
-		}
-		*/
-		String token = "YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=";
+
+		String token = "FORCE_TOKEN_IN";
 		if (request.getSession().getAttribute("TOKEN") != null) {
 			token = request.getSession().getAttribute("TOKEN").toString();
 		}
@@ -79,6 +68,7 @@ public class APIResponseController {
 		}
 		System.out.println("\n\n****EVENT RECEIVED****");
 		System.out.println(payload);
+
 	}
 	
 }
