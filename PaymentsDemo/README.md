@@ -1,3 +1,7 @@
+# Video 
+[See a walkthrough video for the contents of this repo](src/main/resources/demobank_walkthrough.mp4) 
+
+
 # Getting started
 
 Connect to Github and clone the repo to your local machine. Open your favorite IDE and import the project.  This is a springboot application so you should be able to just build the project, get required libraries imported and spin up on your IDE’s webserver.
