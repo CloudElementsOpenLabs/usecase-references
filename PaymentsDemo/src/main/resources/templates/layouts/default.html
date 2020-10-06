@@ -18,7 +18,19 @@
 			</div>
 		</div>
 	</div>
-
+	
+	
+	<div class="spinnerContainer" style="display: none">
+		<div class="cssload-loader" style="margin-top: 500px">
+			<div class="cssload-inner cssload-one"></div>
+			<div class="cssload-inner cssload-two"></div>
+			<div class="cssload-inner cssload-three"></div>
+			
+		</div>
+		<div style="text-align:center; z-index: 100"><i>Loading content ...</i></div>
+	</div>
+	
+	
    <div class="container">
    	 <div class="alert alert-info" id="passwordsNoMatchRegister" style="display:none;" th:if="${param.id != null && param.id[0] != null}">
     	<strong>Object created!</strong> <span th:text="${' Find the object with id ' + param.id[0]}"/> 
@@ -29,7 +41,7 @@
      </div>
    	
    	
-   	
+ 	
      <div layout:fragment="content"></div>
      
      <div th:replace="fragments/footer :: footer"></div>

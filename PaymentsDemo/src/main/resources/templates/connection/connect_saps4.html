@@ -8,7 +8,7 @@
 		
 		
 		.rightSide {
-		  background-color: #164c7a;
+		  background-color: #1976d2;
 		  color: #fff;
 		  font-size: 48px;
 		}
@@ -24,13 +24,20 @@
     <div class="col-sm hidden-md-down align-self-center">
     	<div class="row" style="width: 80%; margin:auto">
 			<div class="col-sm">
-			    <h1>Netsuite</h1>
-			    <h3>Taking small business to new heights</h3>
+			    <h1>SAP</h1>
+			    <h3>SAP S/4 Connection details</h3>
 			      
 			    <br/>
-			    <h5>Provide Netsuite credentials to setup the connection</h5>
+			    <h5>Provide SAP S4 details to setup the connection</h5>
 			    
 			    <div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
+					</div>
+					<input type="text" class="form-control" placeholder="Host name"/>
+				</div>
+				
+				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
@@ -41,28 +48,26 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Password"/>
+					<input type="password" class="form-control" placeholder="Password"/>
 				</div>
 				
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Account ID"/>
+					<input type="text" class="form-control" placeholder="Instance Number"/>
 				</div>
 				
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Application ID"/>
+					<input type="text" class="form-control" placeholder="System ID"/>
 				</div>
-				
-				
 				
 			      
 			    <p style="margin-top: 20px">
-			    	<button class="btn btn-primary" style="width: 100%" id="netsuiteConnect">Connect to Netsuite</button>
+			    	<button class="btn btn-primary" style="width: 100%" id="netsuiteConnect">Connect to SAP S4</button>
 			    	
 			    </p>
 			</div>
@@ -73,7 +78,7 @@
     <div class="col-sm rightSide">
     	<div class="row h-100">
     		<div class="col-sm align-self-center" style="text-align: center">
-			      <img src="/images/connection/netsuite.png" />
+			      <img src="/images/connection/sap.png" />
 			      <p id="provisioning" style="display: none;">Provisioning instance....</p>
     		</div>
     	</div>
@@ -82,14 +87,17 @@
 </div>
 
 
+	
+	
 <script language="javascript">
 $(document).ready (function () {
 	   $("#netsuiteConnect").on("click", function (e) {
-		   $("#provisioning").css ("display", "block");
-			
+		   //$("#provisioning").css ("display", "block");
+		   $(".spinnerContainer").css ("display", "block");
+		   
 		   setTimeout(function() {
-			   location.href = "/connection_successful/fmZ42Q1kvpfp7eAXV0ozRIonJIA2jHXlaWEoHcDAVNY=";
-	        }, 5000);
+			   location.href = "/connection_successful/ga1Y1kZrSWfjtkAKhDA5aZ4L7vtD1wFptKhc7+Bm0w4=";
+	       }, 10000);
 	   });
 });
 

@@ -7,7 +7,14 @@
 
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 
-	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+	<div class="row" style="text-align: center">
+		<div class="col-sm"><a href="/" class="menu"><span class="fa fa-home">&nbsp;</span> My connections</a></div>
+		<div class="col-sm"><a href="/connection_successful/YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=" class="menu"><span class="fa fa-home">&nbsp;</span> Administration</a></div>
+		<div class="col-sm"><a href="/getVendors?init=true" class="menu"><span class="fa fa-user-tie">&nbsp;</span> Manage vendors</a></div>
+		<div class="col-sm"><a href="/getPayables?init=true" class="menu" active><span class="fa fa-dollar-sign">&nbsp;</span> Vendor payments</a></div>
+	</div>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;margin-top:25px;">
 		
 		<div class="row" th:if="${ message != null }" style="margin-bottom: 20px">
 			<div class="col-sm">
@@ -89,6 +96,8 @@
 				$("table tbody").append(body);
 				
 				total += Number(result[i].total);
+				
+				console.log (result[i].total);
 			}
 			//$("#totalValue").html(total + " USD");
 			

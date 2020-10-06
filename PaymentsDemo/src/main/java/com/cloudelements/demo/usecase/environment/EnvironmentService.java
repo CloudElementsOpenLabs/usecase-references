@@ -22,7 +22,7 @@ public class EnvironmentService {
 	private String orgProperty = "cloudelements.organization";
 	private String usrProperty = "cloudelements.user";
 	
-	private String callbackURL = "https://0126c6c0.ngrok.io";
+	private String callbackURL = "https://55d3ae379f5a.ngrok.io";
 	
 	private String qboToken = "";
 	

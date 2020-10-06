@@ -1,7 +1,7 @@
 package com.cloudelements.demo.usecase.eventhandling;
 
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
 import com.cloudelements.demo.usecase.payments.PaymentDataService;
-import com.cloudelements.demo.util.HTTPUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -35,7 +34,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class APIResponseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(APIResponseController.class);	
-	
+	  private static FileWriter file;
+	  
 	@Autowired
 	private PaymentDataService dataService;
 	
@@ -50,13 +50,20 @@ public class APIResponseController {
 		
 		try {
 			JSONArray eventsArr = (JSONArray) jsonObj.get("events");
-			String objectId = String.valueOf(((JSONObject) eventsArr.get(0)).get("objectId"));
 			
-			String invoiceId = objectId.substring(0, objectId.indexOf("|"));
+			JSONObject eventObj = (JSONObject)eventsArr.get(0);
+			if ("vendors".equals( eventObj.get("objectType") ) ) {
+				 file = new FileWriter("eventDetails.txt");
+		            file.write(eventObj.toJSONString());
+		            file.close();
+			}
+			//String objectId = String.valueOf(((JSONObject) eventsArr.get(0)).get("objectId"));
 			
-			JSONObject payableObj = HTTPUtil.doGet( envService.getQBOToken(), "/elements/api-v2/javaInvoice2/" + invoiceId);
+			//String invoiceId = objectId.substring(0, objectId.indexOf("|"));
 			
-			dataService.getPayablesList().add(payableObj);
+			//JSONObject payableObj = HTTPUtil.doGet( envService.getQBOToken(), "/elements/api-v2/javaInvoice2/" + invoiceId);
+			
+			//dataService.getPayablesList().add(payableObj);
 			
 		} catch (Exception e) {
 			System.out.println("Failed to capture payable from source system ");

@@ -45,29 +45,43 @@ public class PaymentsViewController {
 	
 	@RequestMapping("/getPayables")
 	public String getPayables (Map<String, Object> model, HttpServletRequest request) throws ParseException {
-		JSONArray payables = HTTPUtil.doGetArray(request.getSession().getAttribute("SELECTED_TOKEN").toString(), "/elements/api-v2/javaInvoice2");
-		dataService.init();
+		ArrayList<JSONObject> payableList = (ArrayList<JSONObject>) request.getSession().getAttribute("PAYABLELIST");
 		
-		ArrayList<JSONObject> payableList = new ArrayList<JSONObject>();
-		for (int i = 0; i < payables.size(); i++) {
-			JSONObject payablesObj = (JSONObject) payables.get (i);
+		double total =0;
+		if (payableList == null || request.getParameter("init") != null) {
+			JSONArray payables = HTTPUtil.doGetArray(request.getSession().getAttribute("SELECTED_TOKEN").toString(), "/elements/api-v2/javaInvoice2?pageSize=20");
+			dataService.init();
 			
-			payablesObj.put("totalStr", df2.format( Double.parseDouble( payablesObj.get("total").toString() )) );
+			payableList = new ArrayList<JSONObject>();
+			for (int i = 0; i < payables.size(); i++) {
+				JSONObject payablesObj = (JSONObject) payables.get (i);
+				
+				try {
+					total += Double.parseDouble( String.valueOf(payablesObj.get("total")) );
+					payablesObj.put("totalStr", df2.format( Double.parseDouble( payablesObj.get("total").toString() )) );
+				} catch (NumberFormatException e) {
+					payablesObj.put("totalStr", 0);
+				}
+				payableList.add(payablesObj);
+			}
 			
-			payableList.add(payablesObj);
+			request.getSession().setAttribute("PAYABLELIST", payableList);
+			model.put("mytotal", String.valueOf(total));
 		}
-		
 		model.put("payableList", payableList);
 		model.put("totalOutstanding", String.valueOf( df2.format( Double.parseDouble(String.valueOf(calculateTotal (payableList) ))) ) + " " + payableList.get(0).get("currency"));
-		request.getSession().setAttribute("PAYABLELIST", payableList);
-		
+
 		return "payments/payables";
 	}
 	
 	private Double calculateTotal (List<JSONObject> objList) {
 		double total = 0;
 		for (JSONObject obj : objList) {
-			total += Double.parseDouble(obj.get("total").toString());
+			try {
+				total += Double.parseDouble(obj.get("total").toString());
+			} catch (NullPointerException e) {
+				total += 0;
+			}
 		}
 		
         

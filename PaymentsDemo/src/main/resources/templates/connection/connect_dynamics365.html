@@ -8,7 +8,7 @@
 		
 		
 		.rightSide {
-		  background-color: #164c7a;
+		  background-color: #00204f;
 		  color: #fff;
 		  font-size: 48px;
 		}
@@ -24,45 +24,39 @@
     <div class="col-sm hidden-md-down align-self-center">
     	<div class="row" style="width: 80%; margin:auto">
 			<div class="col-sm">
-			    <h1>Netsuite</h1>
-			    <h3>Taking small business to new heights</h3>
+			    <h1>Microsoft Dynamics 365</h1>
+			    <h3>Microsoft Dynamics 365 Finance and Operations </h3>
 			      
 			    <br/>
-			    <h5>Provide Netsuite credentials to setup the connection</h5>
+			    <h5>Provide the required details to establish a connection to your Dynamics environment</h5>
 			    
 			    <div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Username"/>
+					<input type="text" class="form-control" placeholder="Resource URI"/>
 				</div>
+				
 				
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Password"/>
+					<input type="text" class="form-control" placeholder="Tenant"/>
 				</div>
 				
-				<div class="input-group mb-3">
+				<div class="input-group mb-3" style="display: none">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
 					</div>
-					<input type="text" class="form-control" placeholder="Account ID"/>
-				</div>
-				
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
-					</div>
-					<input type="text" class="form-control" placeholder="Application ID"/>
+					<input type="text" class="form-control" placeholder="Application ID" value="CustomerGroups, Customers, ContactPersons, SalesOrderHeaders, SalesQuotationHeaders, SalesQuotationLines, DistinctProducts, PurchaseOrderHeadersV2, PurchaseOrderLinesV2, SalesInvoiceHeaders, SalesInvoiceLines, SalesOrderConfirmationHeaders, SalesOrderConfirmationLines, SalesOrderLines, VendorInvoiceHeaders, VendorInvoiceLines, LedgerJournalHeaders, LedgerJournalLines"/>
 				</div>
 				
 				
 				
 			      
 			    <p style="margin-top: 20px">
-			    	<button class="btn btn-primary" style="width: 100%" id="netsuiteConnect">Connect to Netsuite</button>
+			    	<button class="btn btn-primary" style="width: 100%" id="netsuiteConnect">Connect to Dynamics 365</button>
 			    	
 			    </p>
 			</div>
@@ -73,7 +67,7 @@
     <div class="col-sm rightSide">
     	<div class="row h-100">
     		<div class="col-sm align-self-center" style="text-align: center">
-			      <img src="/images/connection/netsuite.png" />
+			      <img src="/images/connection/dynamics365.jpg" />
 			      <p id="provisioning" style="display: none;">Provisioning instance....</p>
     		</div>
     	</div>
@@ -88,8 +82,8 @@ $(document).ready (function () {
 		   $("#provisioning").css ("display", "block");
 			
 		   setTimeout(function() {
-			   location.href = "/connection_successful/fmZ42Q1kvpfp7eAXV0ozRIonJIA2jHXlaWEoHcDAVNY=";
-	        }, 5000);
+			   location.href = "/connection_successful/8wyEbBlVTFWtHQUovdOKhr9ttRlXESYKdxvhP4ZEGZA=";
+	        }, 8000);
 	   });
 });
 

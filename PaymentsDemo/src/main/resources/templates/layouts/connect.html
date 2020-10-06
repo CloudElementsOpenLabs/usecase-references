@@ -31,8 +31,17 @@
 		</div>
 	
 	
+	<div class="spinnerContainer" style="display: none">
+		<div class="cssload-loader" style="margin-top: 500px">
+			<div class="cssload-inner cssload-one"></div>
+			<div class="cssload-inner cssload-two"></div>
+			<div class="cssload-inner cssload-three"></div>
+		</div>
+		<div style="text-align:center; z-index: 100; "><i>Provisioning instance...</i></div>
+	</div>
 	
 	     <div layout:fragment="content"></div>
 	   </div>
+	   <div th:replace="fragments/footer :: footer"></div>
 	</body>
 </html>

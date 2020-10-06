@@ -18,7 +18,15 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 
-	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+	<div class="row" style="text-align: center">
+		<div class="col-sm"><a href="/" class="menu"><span class="fa fa-home" >&nbsp;</span> My connections</a></div>
+		<div class="col-sm"><a href="/connection_successful/YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=" class="menu" active><span class="fa fa-home">&nbsp;</span> Administration</a></div>
+		<div class="col-sm"><a href="/getVendors" class="menu"><span class="fa fa-user-tie" >&nbsp;</span> Manage vendors</a></div>
+		<div class="col-sm"><a href="/getPayables" class="menu"><span class="fa fa-dollar-sign" >&nbsp;</span> Vendor payments</a></div>
+	</div>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px; margin-top:25px">
+	
 		<div class="row">
 			<div class="col-sm">
 				<h1><span class="fa fa-check"></span> You successfully connected your ERP to our portal</h1>
@@ -29,32 +37,199 @@
 		
 		<div class="row">
 			<div class="col-sm">
-				<p>Session token <span th:text="${session.SELECTED_TOKEN} "/> </p>
+				<p><i>[DEBUG] Session token currently set to <span th:text="${session.SELECTED_TOKEN} "/> </i></p>
 			</div>
 		</div>
 		
 		<div class="row" style="margin-top: 80px;">
 			<div class="col-sm">
-				<img src="/images/qbo_full.png" style="width: 40%"/> <br/>
-				<p class="appTitle">Quickbooks online</p>
-				<p class="appSubTitle">Less time on accounting, more on what you love</p>
+			
+				<img src="/images/netsuite_logo.png" style="width: 80%" th:if="${ #strings.contains (session.SELECTED_TOKEN, 'fmZ42Q1k') }"/>
+				
+				<img src="/images/qbo_full.png" style="width: 80%" th:if="${ #strings.contains (session.SELECTED_TOKEN, 'lwwnPWmw=') }"/>
+				
+				<img src="/images/dynamics365.jpeg" style="width: 40%" th:if="${ #strings.contains (session.SELECTED_TOKEN, '8wyEbBlVTFWt') }"/>
+				
+				<img src="/images/sap.png" style="width: 40%" th:if="${ #strings.contains (session.SELECTED_TOKEN, 'ga1Y1kZrSW') }"/> 
+				<br/>
 			</div>
 			
+			<div class="col-sm">
+				<div class="row">
+					<div class="col-sm connectionOption">
+						<p><button class="btn btn-primary connectButton" id="vendorButton" onclick="location.href='/getVendors'"><span class="fa fa-user-tie" >&nbsp;</span> Import all vendor data</button></p>
+					</div>
+				</div>
+				<div class="row">	
+					<div class="col-sm connectionOption">
+						<p><button class="btn btn-primary connectButton" onclick="location.href='/getPayables'"><span class="fa fa-dollar-sign" >&nbsp;</span> Import all payables</button></p>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" id="vendorButton" onclick="location.href='/getVendors'">Get vendor data</button></p>
+		
+		<div class="row" style="margin-top:100px">
+			<div class="col-sm">
+				<h1><span class="fa fa-map-signs"></span> Verify your data mapping</h1>
 			</div>
-			
-			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/getPayables'">Get payables</button></p>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm">
+				<p>In order to proceed, please verify if the Payables portal has mapped your Vendor data successfully to the system. You can do so by pulling in example records and making 
+				sure they are displayed as expected in the table below.  Whenever data seems missing or wrong, please adjust the mapping to your needs.</p>  
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top:50px">
+			<div class="col-sm">
+				<h3><span class="fa fa-user-tie" >&nbsp;</span> Vendor data sample</h3>
+
+				<p><button class="btn btn-primary connectButton" id="sampleButton"><span class="fa fa-user-tie" >&nbsp;</span> Pull in sample records</button></p>
+					
 			</div>
 		</div>
 		
 		
+		<div class="row" id="vendorsRow" th:if="${ vendorList != null }">
+			<div class="col-sm">
+				<table style="width: 100%" id="vendorsTable">
+					<thead>
+						<th>Vendor ID</th>
+						<th>Vendor name</th>
+						<th>E-mail</th>
+						<th>Country</th>
+					</thead>
+					<tbody>
+					<tr th:each="vendorObj : ${ vendorList }">
+						<td th:text="${ vendorObj.get('id') }" />
+						<td th:text="${ vendorObj.get('company') }" />
+						<td th:text="${ vendorObj.get('email') }" />
+						<td th:text="${ vendorObj.get('country')}" />
+						<td style="width:1%"><a th:href="${'https://c8.qbo.intuit.com/app/vendordetail?nameId=' + vendorObj.get('id')}" target="_blank"><span class="fa fa-link"></span></a></td>
+					</tbody>
+					</tr>
+					
+					<tr><td colspan="5" style="padding-top:15px; padding-bottom:15px"><i>Adjust the Payables portal mapping to my structure by selecting the correct field mapping in each of the dropdowns</i><td></tr>
+					<tr>
+						<td>
+							<div class="dropdown show" id="vdrDropdown" style="width: 80%">
+								  <a class="btn btn-secondary dropdown-toggle" style="width: 100%;text-align: left" href="#" 
+								  role="button" id="fieldId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    Field selection
+								  </a>
+								
+								  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 100%; height: 200px; overflow-y: auto">
+								    	<a class="dropdown-item" href="#"  id="id" 
+								    	th:each="obj : ${ vdrFieldList }" 
+								    	th:text="${ obj.get('vendorPath') }" 
+								    	/>
+								  </div>
+							</div>
+						</td>
+						
+						<td>
+							<div class="dropdown show" id="vdrDropdown" style="width: 80%">
+								  <a class="btn btn-secondary dropdown-toggle" style="width: 100%;text-align: left" href="#" 
+								  role="button"  id="fieldCompany" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    Field selection
+								  </a>
+								
+								  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 100%; height: 200px; overflow-y: auto">
+								    	<a class="dropdown-item" href="#" id="company" 
+								    	th:each="obj : ${ vdrFieldList }" 
+								    	th:text="${ obj.get('vendorPath') }" />
+								  </div>
+							</div>
+						</td>
+						
+						<td>
+							<div class="dropdown show" id="vdrDropdown" style="width: 80%">
+								  <a class="btn btn-secondary dropdown-toggle" style="width: 100%;text-align: left" href="#" 
+								  role="button"  id="fieldEmail" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    Field selection
+								  </a>
+								
+								  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 100%; height: 200px; overflow-y: auto">
+								    	<a class="dropdown-item" href="#"  id="email" 
+								    	th:each="obj : ${ vdrFieldList }" 
+								    	th:text="${ obj.get('vendorPath') }" />
+								  </div>
+							</div>
+						</td>
+						
+						<td>
+							<div class="dropdown show" id="vdrDropdown" style="width: 80%">
+								  <a class="btn btn-secondary dropdown-toggle" style="width: 100%;text-align: left" href="#" 
+								  role="button"  id="fieldCountry" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    Field selection
+								  </a>
+								
+								  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="width: 100%; height: 200px; overflow-y: auto">
+								    	<a class="dropdown-item" href="#"  id="country" 
+								    	th:each="obj : ${ vdrFieldList }" 
+								    	th:text="${ obj.get('vendorPath') }" />
+								  </div>
+							</div>
+						</td>
+						
+						<td>
+							<span class="fa fa-sync" id="syncButton"></span>
+						</td>
+						
+					</tr>	
+				</table>
+			</div>
+		</div>
 		
-		
+		<script language="javascript">
+			$(document).ready (function () {
+			   $("#sampleButton").on("click", function (e) {
+				   $(".spinnerContainer").css ("display", "block");
+
+				   setTimeout(function() {
+					   location.href = "/getVendorsLimited/5";
+			        }, 30);
+			   });
+			   
+			   $(".dropdown-item").on("click", function (e) {
+				  	console.log ("CLICKED " + this.text + " for >> " + this.id); 
+			   });
+			   
+			   
+			   
+			   $.get( "/getVDRDetail/40/javaVendor", function( data ) {
+				   console.log ( data.fields);
+				   
+				   $("#fieldId").text 		(lookupVDRMappingFor("id", data.fields).vendorPath);
+				   $("#fieldCompany").text 	(lookupVDRMappingFor("company", data.fields).vendorPath);
+				   $("#fieldEmail").text 	(lookupVDRMappingFor("email", data.fields).vendorPath);
+				   $("#fieldCountry").text 	(lookupVDRMappingFor("country", data.fields).vendorPath);
+				});
+			   
+			   $("#syncButton").on("click", function () {
+				   $(".spinnerContainer").css ("display", "block");
+
+				   setTimeout(function() {
+					   location.href = "/saveVendorVDRMapping";
+			        }, 30);
+			   });
+			   
+			} );
+			
+			function lookupVDRMappingFor(requestedPath,  dataFieldArr) {
+				
+				var foundIndex = -1;
+				$.each (dataFieldArr, function (i, val) {
+					if (val.path == requestedPath) {
+						foundIndex = i;
+					}
+				});
+				return dataFieldArr[foundIndex];
+			}
+		</script>
+			
 		
 	</div>
 

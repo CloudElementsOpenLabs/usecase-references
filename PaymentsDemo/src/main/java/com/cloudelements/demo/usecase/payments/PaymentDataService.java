@@ -17,7 +17,10 @@ public class PaymentDataService {
 	private ArrayList<JSONObject> payablesList;
 	
 	
+	private ArrayList<JSONObject> vendorList;
+	
 	public void init () {
 		payablesList = new ArrayList<JSONObject>();
+		vendorList = new ArrayList<JSONObject>();
 	}
 }

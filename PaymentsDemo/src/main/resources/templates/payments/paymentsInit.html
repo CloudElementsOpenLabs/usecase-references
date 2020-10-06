@@ -14,11 +14,20 @@
 		.appSubTitle {margin:0px; padding:0px; font-size:18px; font-weight: light; text-align: left}
 		
 		.connectButton {width: 100%}
+		
+		
 	</style>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
-
-	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+	
+	<div class="row" style="text-align: center">
+		<div class="col-sm"><a href="/" class="menu" active><span class="fa fa-home">&nbsp;</span> My connections</a></div>
+		<div class="col-sm"><a href="/connection_successful/YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=" class="menu"><span class="fa fa-home">&nbsp;</span> Administration</a></div>
+		<div class="col-sm"><a href="/getVendors?init=true" class="menu"><span class="fa fa-user-tie">&nbsp;</span>Manage vendors</a></div>
+		<div class="col-sm"><a href="/getPayables" class="menu"><span class="fa fa-dollar-sign">&nbsp;</span>Vendor payments</a></div>
+	</div>
+	
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px; margin-top:25px;">
 		<div class="row">
 			<div class="col-sm">
 				<h1>Connect your favorite ERP to our portal</h1>
@@ -45,7 +54,8 @@
 				<p class="appSubTitle">Online accounting software for your small business</p>
 			</div>
 		</div>
-
+		
+		
 		<div class="row">
 			<div class="col-sm connectionOption">
 				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/netsuite'">Connect</button></p>
@@ -63,17 +73,17 @@
 		
 		
 		
-				<div class="row" style="margin-top: 80px;">
+		<div class="row" style="margin-top: 80px;">
 			<div class="col-sm connectionOption">
-				<img src="/images/freshbooksv2.svg" class="logo"/> <br/>
-				<p class="appTitle">Freshbooks</p>
-				<p class="appSubTitle">All-in-one small business invoicing and accounting solution</p>
+				<img src="/images/sap.png" class="logo"/> <br/>
+				<p class="appTitle">SAP S/4</p>
+				<p class="appSubTitle">Taking small business to new heights</p>
 			</div>
 			
 			<div class="col-sm connectionOption">
-				<img src="/images/sapbusinessone.svg" class="logo"/> <br/>
-				<p class="appTitle">SAP Business one</p>
-				<p class="appSubTitle">ERP Software for small businesses</p>
+				<img src="/images/dynamics365.jpeg" class="logo"/> <br/>
+				<p class="appTitle">MS Dynamics 365</p>
+				<p class="appSubTitle">Microsoft Dynamics 365 for Finance and Operations</p>
 			</div>
 			
 			<div class="col-sm connectionOption">
@@ -82,14 +92,14 @@
 				<p class="appSubTitle">Exact supports ambitious businesses</p>
 			</div>
 		</div>
-
+		
 		<div class="row">
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-secondary connectButton" disabled>Coming soon</button></p>
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/saps4'">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-secondary connectButton" disabled>Coming soon</button></p>
+				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/dynamics365'">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
