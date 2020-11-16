@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
+import com.cloudelements.demo.util.CustomSessionTokenService;
 import com.cloudelements.demo.util.HTTPUtil;
 
 @Controller
@@ -29,19 +30,12 @@ public class PaymentsViewController {
 	@Autowired
 	private PaymentDataService dataService;
 	
+	@Autowired
+	private CustomSessionTokenService sessionService;
+	
 	private static DecimalFormat df2 = new DecimalFormat("###,###,###.##");
 	
-	@RequestMapping(value = {"/", "/init"} )
-	public String init(Map<String, Object> model, HttpServletRequest request) throws ClientProtocolException, IOException {
-		if (!envService.cePropertiesAvailable()) {
-			model.put("error", "Please set your Cloud Elements environment variables before you continue. Go to <a href='/environment'>the environment page</a> to do so.");
-		}
-		
-		request.getSession().putValue( "PAGETITLE", "Payables portal" );
-		
-		return "payments/paymentsInit";
-	}
-	
+
 	
 	@RequestMapping("/getPayables")
 	public String getPayables (Map<String, Object> model, HttpServletRequest request) throws ParseException {
@@ -49,7 +43,7 @@ public class PaymentsViewController {
 		
 		double total =0;
 		if (payableList == null || request.getParameter("init") != null) {
-			JSONArray payables = HTTPUtil.doGetArray(request.getSession().getAttribute("SELECTED_TOKEN").toString(), "/elements/api-v2/javaInvoice2?pageSize=20");
+			JSONArray payables = HTTPUtil.doGetArray(sessionService.getToken(), "/elements/api-v2/javaInvoice2?pageSize=20");
 			dataService.init();
 			
 			payableList = new ArrayList<JSONObject>();
@@ -91,12 +85,10 @@ public class PaymentsViewController {
 	@RequestMapping("/doPayment/{invoiceId}")
 	public String doPayment (Map<String, Object> model, HttpServletRequest request, @PathVariable String invoiceId) throws ParseException {
 		// Fetch latest payment information for selected invoice
-		String token = request.getSession().getAttribute("SELECTED_TOKEN").toString();
-		JSONObject payableObj = HTTPUtil.doGet( token, "/elements/api-v2/javaInvoice2/" + invoiceId);
+		JSONObject payableObj = HTTPUtil.doGet( sessionService.getToken(), "/elements/api-v2/javaInvoice2/" + invoiceId);
 		
 		String totalVal = "";
 		if (payableObj != null) {
-			
 			String payload = "{\n" + 
 					"  \"amount\": \"" + payableObj.get("total") + "\"," + 
 					"  \"vendorId\": \"" + payableObj.get("vendorId") + "\"," + 
@@ -106,15 +98,11 @@ public class PaymentsViewController {
 					"  \"paymentDate\": \"2020-02-02\"" + 
 					"}";
 			
-			HTTPUtil.doPost(token, "/elements/api-v2/javaPaymentReceipt", payload);
+			HTTPUtil.doPost(sessionService.getToken(), "/elements/api-v2/javaPaymentReceipt", payload);
 			
 			totalVal = "for " + payableObj.get("total") + " " + payableObj.get("currency") + " to " + payableObj.get("vendorName") + " ";
 		}
-		
 		model.put("message", "Payment " + totalVal + "scheduled. This payment information has been reconciled to its source!");
-		
-		
-		
 		return getPayables(model, request);
 	}
 	

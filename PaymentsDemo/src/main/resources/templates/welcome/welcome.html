@@ -20,18 +20,13 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 	
-	<div class="row" style="text-align: center">
-		<div class="col-sm"><a href="/" class="menu" active><span class="fa fa-home">&nbsp;</span> My connections</a></div>
-		<div class="col-sm"><a href="/connection_successful/YqR2zkjbqO3UBK5XvNFI2vsqJEGMj6n7kFPlwwnPWmw=" class="menu"><span class="fa fa-home">&nbsp;</span> Administration</a></div>
-		<div class="col-sm"><a href="/getVendors?init=true" class="menu"><span class="fa fa-user-tie">&nbsp;</span>Manage vendors</a></div>
-		<div class="col-sm"><a href="/getPayables" class="menu"><span class="fa fa-dollar-sign">&nbsp;</span>Vendor payments</a></div>
-	</div>
+
 	
 	<div class="container" style="padding:0;margin:0px; margin-bottom:10px; margin-top:25px;">
 		<div class="row">
 			<div class="col-sm">
-				<h1>Connect your favorite ERP to our portal</h1>
-				<h3>Automatically pull in all your payables and initiate payments</h3>
+				<h1>Connect your ERP to our DemoBank portal</h1>
+				<h3>Automatically pull in your payable information and initiate payments</h3>
 			</div>
 		</div>
 		
@@ -58,15 +53,15 @@
 		
 		<div class="row">
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/netsuite'">Connect</button></p>
+				<p><button class="btn btn-primary connectButton" id="netsuiteerpv2" onclick="connect(this)">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/qbo'">Connect</button></p>
+				<p><button class="btn btn-primary connectButton" id="quickbooks" onclick="connect(this)">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/xero'">Connect</button></p>
+				<p><button class="btn btn-primary connectButton" id="xerov2" onclick="connect(this)">Connect</button></p>
 			</div>
 		</div>
 		
@@ -95,11 +90,11 @@
 		
 		<div class="row">
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/saps4'">Connect</button></p>
+				<p><button class="btn btn-primary connectButton" id="saps4bapi" onclick="connect(this)">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
-				<p><button class="btn btn-primary connectButton" onclick="location.href='/connect/dynamics365'">Connect</button></p>
+				<p><button class="btn btn-primary connectButton" id="dynamics365fo" onclick="connect(this)">Connect</button></p>
 			</div>
 
 			<div class="col-sm connectionOption">
@@ -107,7 +102,33 @@
 			</div>
 		</div>
 		
+		<script language="javascript">
+			var clickedButton;
+		
+			function connect(buttonObj) {
+				$(".spinnerContainer").css ("display", "block");
+				$(".spinnerContent").html("Loading authentication screen in popup...")
+				console.log ("Fetching provisioning URL...")
+				
+				$.getJSON ("/getRedirectURL/" + buttonObj.id, function (data) {
+					clickedButton = buttonObj
+					console.log ("Opening provisioning @ " + data.redirectUrl);
+					
+					window.open (data.redirectUrl, "_blank");
+				});
+			}
+			
+			window.addEventListener("message", (event) => {
+				console.log ("Event received! " + event + "\n" + event.origin);
+				
+				$("#" + clickedButton.id).removeClass("btn-primary").addClass("btn-success");
+				$("#" + clickedButton.id).html("Successfully connected!")
+				$(".spinnerContainer").css ("display", "none");
+				
+			}, false);
+			
+		</script>
 		
 	</div>
-
+	
 </div>

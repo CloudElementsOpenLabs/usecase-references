@@ -18,11 +18,12 @@ public class EnvironmentService {
 	@Autowired
 	private Environment env;
 	
-	private String urlProperty = "cloudelements.url";
-	private String orgProperty = "cloudelements.organization";
-	private String usrProperty = "cloudelements.user";
+	private String urlProperty 			= "cloudelements.url";
+	private String orgProperty 			= "cloudelements.organization";
+	private String usrProperty 			= "cloudelements.user";
+	private String ezraApplicationId 	= "cloudelements.ezra.applicationId";
+	private String callbackURL 			= "cloudelements.ezra.callbackURL";
 	
-	private String callbackURL = "https://55d3ae379f5a.ngrok.io";
 	
 	private String qboToken = "";
 	
@@ -65,6 +66,18 @@ public class EnvironmentService {
 
 
 	public String getCallbackBaseURL() {
-		return callbackURL;
+		if (env != null) {
+			return env.getProperty(callbackURL);
+		} else {
+			return callbackURL;
+		}
+	}
+	
+	public String getEzraApplicationId() {
+		if (env != null) {
+			return env.getProperty(ezraApplicationId);
+		} else {
+			return ezraApplicationId;
+		}
 	}
 }

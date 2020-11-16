@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cloudelements.demo.usecase.authentication.AuthenticationController;
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
+import com.cloudelements.demo.util.CustomSessionTokenService;
 import com.cloudelements.demo.util.HTTPUtil;
 
 @Controller
@@ -31,6 +32,9 @@ public class ConnectionViewController {
 	
 	@Autowired
 	private AuthenticationController authenticationController;
+	
+	@Autowired
+	private CustomSessionTokenService sessionService;
 	
 	@RequestMapping(value = {"/connect/{app}"} )
 	public String init(Map<String, Object> model, HttpServletRequest request, @PathVariable String app) throws ClientProtocolException, IOException {
@@ -54,15 +58,11 @@ public class ConnectionViewController {
 	}
 	
 	
-	
-	@RequestMapping(value = {"/connection_successful/{token}"} )
-	public String connectionSuccessful(Map<String, Object> model, HttpServletRequest request, @PathVariable String token) throws ClientProtocolException, IOException {
-		
-		request.getSession().setAttribute("SELECTED_TOKEN", token.replaceAll("_-_", "/"));
+	@RequestMapping(value = {"/connection_successful"} )
+	public String connectionSuccessful(Map<String, Object> model, HttpServletRequest request) throws ClientProtocolException, IOException {
+		model.put("sessionService", sessionService);
 		
 		return "connection/connection_successful.html";
 	}
-	
-	
 	
 }

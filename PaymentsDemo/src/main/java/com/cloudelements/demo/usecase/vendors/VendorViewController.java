@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.cloudelements.demo.usecase.environment.EnvironmentService;
 import com.cloudelements.demo.usecase.payments.PaymentDataService;
 import com.cloudelements.demo.usecase.vdr.VDRRestController;
+import com.cloudelements.demo.util.CustomSessionTokenService;
 import com.cloudelements.demo.util.HTTPUtil;
 
 @Controller
@@ -33,6 +34,9 @@ public class VendorViewController {
 	
 	
 	@Autowired
+	private CustomSessionTokenService sessionService;
+	
+	@Autowired
 	private PaymentDataService dataService;
 	
 	@RequestMapping(value = {"/getVendors"} )
@@ -41,7 +45,7 @@ public class VendorViewController {
 				
 				
 		if (vendorList == null || request.getParameter("init")!= null) {
-			JSONArray vendorArr = HTTPUtil.doGetArray(request.getSession().getAttribute("SELECTED_TOKEN").toString(), "/elements/api-v2/javaVendor?pageSize=20");
+			JSONArray vendorArr = HTTPUtil.doGetArray(sessionService.getToken(), "/elements/api-v2/javaVendor?pageSize=20");
 			
 			vendorList = new ArrayList<JSONObject>();
 			for (int i = 0; i < vendorArr.size(); i++) {
@@ -61,7 +65,7 @@ public class VendorViewController {
 	
 	@RequestMapping(value = {"/getVendorsLimited/{limit}"} )
 	public String getPayablesLimit5 (Map<String, Object> model, HttpServletRequest request, @PathVariable String limit) throws ParseException {
-			JSONArray vendorArr = HTTPUtil.doGetArray(request.getSession().getAttribute("SELECTED_TOKEN").toString(), "/elements/api-v2/javaVendor?pageSize=" + limit);
+			JSONArray vendorArr = HTTPUtil.doGetArray(sessionService.getToken(), "/elements/api-v2/javaVendor?pageSize=" + limit);
 			
 			ArrayList<JSONObject> vendorList = new ArrayList<JSONObject>();
 			for (int i = 0; i < vendorArr.size(); i++) {
@@ -70,6 +74,7 @@ public class VendorViewController {
 				vendorList.add(vendorObj);
 			}
 		
+			model.put("sessionService", sessionService);
 		model.put("vendorList", vendorList);
 		model.put("vdrFieldList", vdrController.getVDRFieldList("170")); // Display all options for VDR dropdowns for the given element // hardcoded to QBO
 		return "connection/connection_successful.html";
