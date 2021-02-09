@@ -8,14 +8,36 @@
 				<h1>
 					<a href="/" title="Back to first page">
 						<img src="/images/mycompany_logo2.png" style="width:70px; height: 60px"/>
-						<span style="vertical-align:middle; font-weight: bold">MyCompany </span>
+						<span style="vertical-align:middle; font-weight: bold">DemoBank </span>
 						<span style="vertical-align:middle;" th:text="${ ' - ' + session.PAGETITLE }" />
 					</a>
 				</h1>
 			</div>
+			<div class="col-sm" style="text-align:right; color: #fff; padding-right:25px;">
+				<img src="/images/profile.png" class="superSmallLogo" style="margin-right: 15px"/> Guy Van Wert
+			</div>
+		</div>
+		
+		
+		<div class="row menuBar" style="text-align: center">
+			<div class="col-sm"><a href="/" class="menu"><span class="fa fa-home">&nbsp;</span> My connections</a></div>
+			<div class="col-sm"><a href="/connection_successful" class="menu"><span class="fa fa-home">&nbsp;</span> Administration</a></div>
+			<div class="col-sm"><a href="/getVendors?init=true" class="menu"><span class="fa fa-user-tie">&nbsp;</span>Manage vendors</a></div>
+			<div class="col-sm"><a href="/getPayables" class="menu"><span class="fa fa-dollar-sign">&nbsp;</span>Vendor payments</a></div>
 		</div>
 	</div>
-
+	
+	
+	<div class="spinnerContainer" style="display: none">
+		<div class="cssload-loader" style="margin-top: 500px">
+			<div class="cssload-inner cssload-one"></div>
+			<div class="cssload-inner cssload-two"></div>
+			<div class="cssload-inner cssload-three"></div>
+		</div>
+		<div style="text-align:center; z-index: 100" class="spinnerContent"><i>Loading content ...</i></div>
+	</div>
+	
+	
    <div class="container">
    	 <div class="alert alert-info" id="passwordsNoMatchRegister" style="display:none;" th:if="${param.id != null && param.id[0] != null}">
     	<strong>Object created!</strong> <span th:text="${' Find the object with id ' + param.id[0]}"/> 
@@ -26,7 +48,7 @@
      </div>
    	
    	
-   	
+ 	
      <div layout:fragment="content"></div>
      
      <div th:replace="fragments/footer :: footer"></div>

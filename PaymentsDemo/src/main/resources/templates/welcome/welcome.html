@@ -1,0 +1,134 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+		
+		.connectionOption {
+			border: 1pix solid #CCC;
+			text-align: center;
+			margin-top: 20px;
+		}
+		
+		.appTitle {font-size: 28px; font-weight: medium; margin-top: 25px; margin-bottom:0px; padding-bottom:0px; text-align: left}
+		
+		.appSubTitle {margin:0px; padding:0px; font-size:18px; font-weight: light; text-align: left}
+		
+		.connectButton {width: 100%}
+		
+		
+	</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+	
+
+	
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px; margin-top:25px;">
+		<div class="row">
+			<div class="col-sm">
+				<h1>Connect your ERP to our DemoBank portal</h1>
+				<h3>Automatically pull in your payable information and initiate payments</h3>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm connectionOption">
+				<img src="/images/netsuiteerpv2.svg" class="logo"/> <br/>
+				<p class="appTitle">Netsuite ERP</p>
+				<p class="appSubTitle">Taking small business to new heights</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/quickbooks.svg" class="logo"/> <br/>
+				<p class="appTitle">Quickbooks online</p>
+				<p class="appSubTitle">Less time on accounting, more on what you love</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/xero.svg" class="logo"/> <br/>
+				<p class="appTitle">Xero</p>
+				<p class="appSubTitle">Online accounting software for your small business</p>
+			</div>
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="netsuiteerpv2" onclick="connect(this)">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="quickbooks" onclick="connect(this)">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="xerov2" onclick="connect(this)">Connect</button></p>
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm connectionOption">
+				<img src="/images/sap.png" class="logo"/> <br/>
+				<p class="appTitle">SAP S/4</p>
+				<p class="appSubTitle">Taking small business to new heights</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/dynamics365.jpeg" class="logo"/> <br/>
+				<p class="appTitle">MS Dynamics 365</p>
+				<p class="appSubTitle">Microsoft Dynamics 365 for Finance and Operations</p>
+			</div>
+			
+			<div class="col-sm connectionOption">
+				<img src="/images/servicenow_logo.png" class="logo"/> <br/>
+				<p class="appTitle">Service Now</p>
+				<p class="appSubTitle">Create productivity workflows for enterprises</p>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="saps4bapi" onclick="connect(this)">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="dynamics365fo" onclick="connect(this)">Connect</button></p>
+			</div>
+
+			<div class="col-sm connectionOption">
+				<p><button class="btn btn-primary connectButton" id="servicenowoauth" onclick="connect(this)">Connect</button></p>
+			</div>
+		</div>
+		
+		<script language="javascript">
+			var clickedButton;
+		
+			function connect(buttonObj) {
+				$(".spinnerContainer").css ("display", "block");
+				$(".spinnerContent").html("Loading authentication screen in popup...")
+				console.log ("Fetching provisioning URL...")
+				
+				$.getJSON ("/getRedirectURL/" + buttonObj.id, function (data) {
+					clickedButton = buttonObj
+					console.log ("Opening provisioning @ " + data.redirectUrl);
+					
+					window.open (data.redirectUrl, "_blank");
+				});
+			}
+			
+			window.addEventListener("message", (event) => {
+				console.log ("Event received! " + event + "\n" + event.origin);
+				
+				$("#" + clickedButton.id).removeClass("btn-primary").addClass("btn-success");
+				$("#" + clickedButton.id).html("Successfully connected!")
+				$(".spinnerContainer").css ("display", "none");
+				
+			}, false);
+			
+		</script>
+		
+	</div>
+	
+</div>

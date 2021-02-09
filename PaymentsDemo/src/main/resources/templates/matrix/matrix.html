@@ -1,0 +1,77 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+		a { color: #fff; }
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px;">
+		
+		<div class="row" th:if="${ message != null }" style="margin-bottom: 20px">
+			<div class="col-sm">
+				<div class="alert alert-info" role="alert" th:text="${ message }"/>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm">
+				<h1>Event matrix per hub</h1>
+			</div>		
+		</div>
+		
+		
+		<div class="row">
+			<div class="col-sm">
+				<table id="vendorsTable">
+					<thead>
+						<th>Hub</th>
+						<th>Element key</th>
+						<th th:each="event : ${ events }" th:text="${ event }" style="width: 150px"/>
+					</thead>
+					<tbody>
+					<tr th:each="el : ${ matrix }" style="border: 1px solid #CCC">
+						<td th:text="${ el.value.getHub() }" />
+						<td th:text="${ el.value.getElementName() }"/>
+						
+						<td th:each="event : ${ events }" 
+							style="border: 1px solid #CCC; text-align:center"
+							th:text="${ el.value.getSupportedEvents() != null && el.value.getSupportedEvents().contains (event) ? 'x' : '' }"
+							/>
+					</tr>
+					</tbody>
+					</tr>				
+				</table>
+			</div>
+		</div>
+		
+		
+		<div class="row" style="margin-top: 50px">
+			<div class="col-sm">
+				<table id="vendorsTable">
+					<thead>
+						<th>Event object</th>
+						<th th:each="el : ${ matrix }" th:text=" ${ el.value.getElementName() }" />
+					</thead>
+					<tbody>
+					<tr th:each="event : ${ events }" style="border: 1px solid #CCC">
+						<td th:text="${ event }"/>
+						
+						
+						<td th:each="el : ${ matrix }" 
+							style="border: 1px solid #CCC; text-align:center"
+							th:text="${ el.value.getSupportedEvents() != null && el.value.getSupportedEvents().contains (event) ? 'x' : '' }"
+							/>
+					</tr>
+					</tbody>
+					</tr>				
+				</table>
+			</div>
+		</div>
+		
+		
+		
+	</div>
+
+</div>
