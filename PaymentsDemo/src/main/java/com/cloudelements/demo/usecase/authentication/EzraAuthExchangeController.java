@@ -1,10 +1,18 @@
 package com.cloudelements.demo.usecase.authentication;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -38,6 +46,8 @@ public class EzraAuthExchangeController {
 		String sessionURL = "/v1alpha1/elements/normalized-instances/applications/" + envService.getEzraApplicationId() + "/sessions?elementKey=" + elementKey;
 		
 		JSONObject obj = HTTPUtil.doPost(null, sessionURL, null);
+		
+		System.out.println("JSON OBJ: " + obj);
 		return obj;
 	}
 	
@@ -64,5 +74,42 @@ public class EzraAuthExchangeController {
 		System.out.println("Token received " + token);
 		
 		sessionService.setToken(token);
+	}
+	
+	@RequestMapping (value = "/refreshNotification")
+	public JSONObject getLastNotification (HttpServletRequest request, HttpServletResponse response, ModelMap model) throws ParseException {
+		/*
+		curl -H "Authorization: Bearer d666462aad5aaac1cd91b87b3c64a910" \
+		  "https://api.pipedream.com/v1/sources/dc_4Ou4WEV/event_summaries?expand=event"
+		*/
+		JSONObject obj = doGet ("https://api.pipedream.com/v1/sources/dc_4Ou4WEV/event_summaries?expand=event");
+		JSONArray arr = (JSONArray) obj.get("data");
+		
+		return (JSONObject) arr.get(0);
+	}
+	
+	private JSONObject doGet (String URLStr) throws ParseException {
+		HttpGet getter = new HttpGet(URLStr);
+		
+		getter.addHeader("Authorization", "Bearer d666462aad5aaac1cd91b87b3c64a910");
+		getter.addHeader("Accept", "application/json"); // This forces bulk to return json instead of csv
+		
+		try {
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse response = client.execute(getter);
+			if(response!=null){
+            	InputStream in = response.getEntity().getContent() ;
+            	JSONParser parser = new JSONParser();
+            	Object obj = parser.parse(new InputStreamReader(in));
+            	return (JSONObject) obj;
+			}
+        	
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

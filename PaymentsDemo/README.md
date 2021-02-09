@@ -21,6 +21,14 @@ When you launch the springboot app, it has no knowledge of your Cloud Elements a
 
 *add screenshot of: environment page + explanation what each of the inputs are*
 
+
+### Element specific details
+Upon writing the app supports connections to Quickbooks, Xero, Netsuite, SAP S4, Dynamics 365 Finance and Operations.  In order to use any of these and actually authenticate to them, you will need credentials. Quickbooks and Xero have free trial programs on their website that you can connect to.
+
+- Free trial for *Quickbooks* at https://quickbooks.intuit.com/pricing/
+- Free trial for *Xero* at https://www.xero.com/us/signup/?escape=true
+
+
 ### Cloud-elements specific configuration
 The springboot app shows scalability to pull in *vendor* and *invoice* data across multiple 3rd party applications. In order to do so we have created a few Virtual Data Resources (VDRs) that are exposed as APIs on top of the actual elements. We have bundled them as assets for you to import into your Cloud Elements environment.  To make sure they are easy to recognize we prefixed them with "java".  Download them here and then use the *Manage environments* in CE to import the assets.
 
@@ -31,11 +39,6 @@ The springboot app shows scalability to pull in *vendor* and *invoice* data acro
 *add screenshots of: The doctor + VDR screen + mapping*
 
 
-### Element specific details
-Upon writing the app supports connections to Quickbooks, Xero, Netsuite, SAP S4, Dynamics 365 Finance and Operations.  In order to use any of these and actually authenticate to them, you will need credentials. Quickbooks and Xero have free trial programs on their website that you can connect to.
-
-- Free trial for *Quickbooks* at https://quickbooks.intuit.com/pricing/
-- Free trial for *Xero* at https://www.xero.com/us/signup/?escape=true
 
 
 
