@@ -44,12 +44,16 @@ public class EnvironmentViewController {
 	public String postInvoice (Map<String, Object> model, HttpServletRequest request, HttpServletResponse response, 
 			@RequestParam String url,
 			@RequestParam String organization,
-			@RequestParam String user) throws IOException {
+			@RequestParam String user,
+			@RequestParam String ezraApplicationId,
+			@RequestParam String callbackURL) throws IOException {
 		
 		Properties props = new Properties();
 	    props.setProperty("cloudelements.url", url);
 	    props.setProperty("cloudelements.organization", organization);
 	    props.setProperty("cloudelements.user", user);
+	    props.setProperty("cloudelements.ezra.applicationId", ezraApplicationId);
+	    props.setProperty("cloudelements.ezra.callbackURL", callbackURL);
 	    
 	    File f = new File("application.properties");
 	    OutputStream out = new FileOutputStream( f );
@@ -64,9 +68,12 @@ public class EnvironmentViewController {
 	}
 	
 	private void setPropertiesTo (Map<String, Object> model) {
-		model.put("url", 			env.getProperty("cloudelements.url"));
-		model.put("organization", 	env.getProperty("cloudelements.organization"));
-		model.put("user", 			env.getProperty("cloudelements.user"));
+		model.put("url", 				env.getProperty("cloudelements.url"));
+		model.put("organization", 		env.getProperty("cloudelements.organization"));
+		model.put("user", 				env.getProperty("cloudelements.user"));
+		model.put("ezraApplicationId", 	env.getProperty("cloudelements.ezra.applicationId"));
+		model.put("callbackURL", 		env.getProperty("cloudelements.ezra.callbackURL"));
+		
 	}
 	
 }

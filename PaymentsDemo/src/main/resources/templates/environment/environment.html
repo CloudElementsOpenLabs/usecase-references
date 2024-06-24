@@ -49,7 +49,29 @@
 							  <input type="text" class="form-control" aria-describedby="text-link" name="user" th:value="${ user }" placeholder="Cloud Elements user secret"/>
 							</div>
 						</div>
-					</div>				
+					</div>
+					
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="text-link"><span class="fa fa-passport" /></span>
+							  </div>
+							  <input type="text" class="form-control" aria-describedby="text-link" name="ezraApplicationId" th:value="${ ezraApplicationId }" placeholder="Cloud Elements Ezra Application ID"/>
+							</div>
+						</div>
+					</div>		
+					
+					<div class="row">
+						<div class="col-sm">
+							<div class="input-group mb-3">
+							  <div class="input-group-prepend">
+							    <span class="input-group-text" id="text-link"><span class="fa fa-link" /></span>
+							  </div>
+							  <input type="text" class="form-control" aria-describedby="text-link" name="callbackURL" th:value="${ callbackURL }" placeholder="Cloud Elements Ezra Auth callback URL"/>
+							</div>
+						</div>
+					</div>			
 				</div>
 			</div>
 		

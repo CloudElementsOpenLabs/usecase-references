@@ -157,6 +157,7 @@ public class HTTPUtil {
 		String authorization = envService.getAuthorizationHeader() + ( token != null ? ", Element " + token : "");
 		
 		HttpGet getter = new HttpGet( envService.getURL() +  URLStr);
+		
 		getter.addHeader("Authorization", authorization);
 		getter.addHeader("Accept", "application/json"); // This forces bulk to return json instead of csv
 		

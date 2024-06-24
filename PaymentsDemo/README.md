@@ -1,13 +1,6 @@
-# Getting started
-
-Connect to Github and clone the repo to your local machine. Open your favorite IDE and import the project.  This is a springboot application so you should be able to just build the project, get required libraries imported and spin up on your IDE’s webserver.
-
-Upon initial launch the app does not know of your Cloud elements account yet.  To complete this configuration do any of the following
-* Open application.properties and complete the following parameters (cloudelements.url, cloudelements.organization, cloudelements.user)
-* Use the UI to configure the above by using  http://localhost:8080/environment 
-
-
-You can go through the application’s UI by going to http://localhost:8080 or (/createInvoice)
+# Video 
+[Download a walkthrough video for the contents of this repo](src/main/resources/demobank_walkthrough.mp4) 
+*TO BE UPDATED*
 
 # Application goal
 This app is designed to showcase scalability using the Cloud Elements platform.  You can connect to any relevant application by just adding the element identification key to the array on the CreateInvoice controller init method. The app displays all elements from that app array onto the “Authentication step”.  Everything else onwards from there is handled using the same code and Cloud Element’s back-end APIs.  Beyond this one code change, you scale up by going into our platform and mapping the VDRs to the new application.  javaInvoice, javaProduct, javaVendor, javaCurrency 
@@ -17,33 +10,45 @@ The end result is 3 steps.
 * Download Product, Vendor and Currency information from the 3rd party app in bulk calls
 * Create an invoice using the data that was just fetched
 
-# Application design
-The app itself does not really have any business logic apart from combining UI data and pushing into a Virtual Data Resource. 
 
-### CreateInvoiceViewController
-	This is the main ViewController adding and processing the necessary data in order to show the 3 steps in the UI.  The init method is the one that defines the array to which elements the app can authenticate to.  This should naturally match to the VDR app mappings setup within Cloud elements - unless you are just using the app to showcase authentication scalability of course.
+# Getting started
 
-### ElementController
-	Once you click any of the listed elements in the UI /elementDetail/{key} will be triggered which actually performs an outbound call to Cloud element’s platform API call /elelements/{key}. the elementDetail.html page handles which parts of the configuration should be shown on screen.
-
-### EnvironmentViewController
-Not core to the application but provides a user interface to set your Cloud elements configuration parameters into the application.properties file.
-
-### AuthenticationController
-	This controller is used to handle differences between the Basic & oAuth flow plus exposes the /handleOAuthCallback redirect message.  This last method is used to set as callback URL on oauth2 applications.  (As example on quickbooks you will need to add this as trusted URL https://your_ngrok:8080/handleOAuthCallback)
+This is a springboot web application leveraging Thymeleaf for the UI component. Clone the repo into your IDE, build and import the required libraries, then run as Java project.
 
 
-### BulkController
-	This class is designed to represent the Cloud Elements Bulk download functionality.  It has following  methods 
-* Initiate a bulk download call on whichever object and get a bulk ID in return
-* Fetch the status of any given bulk download using it’s bulk ID
-* Download the JSON result of the Bulk download and parse each returned line into JSONObjects
+### Springboot app specific configuration
+When you launch the springboot app, it has no knowledge of your Cloud Elements account just yet.  You can set these properties by going to http://localhost:8080/environment.  Upon saving the form, the *EnvironmentViewController* will be updating the *application.properties* file. In order for this to take effect, make sure to stop and restart the app in your IDE.  Upon restart the "set your environment" message is now no longer shown and you can go ahead using the app.
 
-### APIResponseController
-	Added this class to generically handle and parse any incoming “event” to a standardized JSON Object to work from. Will also print to system output that an event was received. You can plug in specific actions from this apiResponse method.
+*add screenshot of: environment page + explanation what each of the inputs are*
 
-###Model classes
-Notice that the model classes are a representation of the VDRs you find within Cloud Elements. Product, Invoice, Vendor, Currency.  These are (de)serialized when calling the VDRs back & forth and take complexity away of having to do manual work. All of a sudden both front-end and back-end know what a ‘vendor’ is.
+
+### Element specific details
+Upon writing the app supports connections to Quickbooks, Xero, Netsuite, SAP S4, Dynamics 365 Finance and Operations.  In order to use any of these and actually authenticate to them, you will need credentials. Quickbooks and Xero have free trial programs on their website that you can connect to.
+
+- Free trial for *Quickbooks* at https://quickbooks.intuit.com/pricing/
+- Free trial for *Xero* at https://www.xero.com/us/signup/?escape=true
+
+
+### Cloud-elements specific configuration
+The springboot app shows scalability to pull in *vendor* and *invoice* data across multiple 3rd party applications. In order to do so we have created a few Virtual Data Resources (VDRs) that are exposed as APIs on top of the actual elements. We have bundled them as assets for you to import into your Cloud Elements environment.  To make sure they are easy to recognize we prefixed them with "java".  Download them here and then use the *Manage environments* in CE to import the assets.
+
+- javaVendor
+- javaInvoice2
+- javaPayment
+
+*add screenshots of: The doctor + VDR screen + mapping*
+
+
+
+
+
+## Authentication
+To authenticate to any of these elements the springboot app uses the CE Standardized Authentication & Provisioning service.  You will notice there's two 2 methods in *AuthenticationController*.
+
+- getRedirectURL: Creates an authentication session on CE via a single API call using the elementKey
+- remoteAuthListener: Acts as a webhook to capture the CE response upon instance provisioning
+
+
 
 
 ### The UI
@@ -54,19 +59,10 @@ The front-end is designed using Thymeleaf with jquery and bootstrap components. 
 * environment.html (Handles the environment setup with EnvironmentViewController)
 * footer.html & header.html are defining js libraries and layout components
 
-### Utility classes
-* AuthenticationUtil - Simple utility class that puts the json together to what Cloud Elements is expecting to create an instance, disregarding authentication type
-* HTTPUtil - This class has a set of similar methods but is easy to use as it defaults the GET, POST, DELETE operations to the CE Platform, including correct authentication etc. Returns properly parsed JSON Objects to work with in the controller/service classes.
+*TODO: rewrite*
 
-### JUNIT Classes
-There ’s a few JUNIT classes that test off methods like the bulk framework etc.  You can use these to continue to work from in case you want to test/add additional functionality
 
 # Things to do
-* oAuth authentication does only work for step 1 - generically. Step 2: handling the callback url is in place but how do we know which properties CE is expecting upon the instanceCreation call. Look into the example of Quickbooks and Salesforce 
 * Setup VDRs to all ERP elements we have
 * Perhaps we want to create a dedicated CE account to this holding all configuration. Which means that you can spin up the app with default credentials in there and you don’t have to do anything. It just works!
-* Exception handling on the actual invoice creation is not ok yet
-* The authentication part of the UI is using downloaded images. Our APIs are not properly exposing where the logos are located. If it would, we could load the elements from the /elements API call and display the logos as exposed there
-* After authentication I'm currently adding the instancetoken as request param. Not the best secure example and should refactor to store directly onto session object
-
 

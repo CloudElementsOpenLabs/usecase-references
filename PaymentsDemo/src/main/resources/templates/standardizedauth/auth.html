@@ -1,0 +1,114 @@
+<div id="page" layout:fragment="content" layout:decorator="layouts/default">
+	<style>
+		H4 { border-right: 1px solid #CCC; }
+		.subtitle { font-style: italic; font-size: 9px;}
+		
+		.connectionOption {
+			border: 1pix solid #CCC;
+			text-align: center;
+			margin-top: 20px;
+		}
+		
+		.appTitle {font-size: 28px; font-weight: medium; margin-top: 25px; margin-bottom:0px; padding-bottom:0px; text-align: left}
+		
+		.appSubTitle {margin:0px; padding:0px; font-size:18px; font-weight: light; text-align: left}
+		
+		.connectButton {width: 100%}
+		
+		
+	</style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+	
+
+	
+	<div class="container" style="padding:0;margin:0px; margin-bottom:10px; margin-top:25px;">
+		<div class="row">
+			<div class="col-sm">
+				<h3>Connect to any system from the following list</h3>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    <span id="selected">Select element from this list</span>
+				    <span id="selectedKey">(key)</span>
+				  </button>
+				  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+			        <a href="#" class="dropdown-item" id="freshbooksv2">Freshbooks Cloud Accounting</a>
+			        <a href="#" class="dropdown-item" id="dynamics365fo">Microsoft Dynamics 365 Finance and Operations-2</a>
+			        <a href="#" class="dropdown-item" id="moneycorp_2">Moneycorp</a>
+			        <a href="#" class="dropdown-item" id="acimodelbank">ACI Modelbank</a>
+			        <a href="#" class="dropdown-item" id="quickbooksonprem">QuickBooks Enterprise</a>
+			        <a href="#" class="dropdown-item" id="sapariba">SAP Ariba</a>
+			        <a href="#" class="dropdown-item" id="billyaccounting">Billy</a>
+			        <a href="#" class="dropdown-item" id="plaid">Plaid</a>
+			        <a href="#" class="dropdown-item" id="sageone">Sage Accounting</a>
+			        <a href="#" class="dropdown-item" id="dynamics365fo">Microsoft Dynamics 365 Finance and Operations</a>
+			        <a href="#" class="dropdown-item" id="freshbooks">Freshbooks Classic</a>
+					<a href="#" class="dropdown-item" id="intacctv3">Sage Intacct V3</a>
+			        <a href="#" class="dropdown-item" id="quickbooksonlinerest">QuickBooks Online Rest</a>
+					<a href="#" class="dropdown-item" id="tipalti">Tipalti</a>
+					<a href="#" class="dropdown-item" id="sage200">Sage 200 Accounting</a>
+			        <a href="#" class="dropdown-item" id="xerov2">Xero V2</a>
+			        <a href="#" class="dropdown-item" id="quickbooks">QuickBooks Online</a>
+			        <a href="#" class="dropdown-item" id="netsuitefinancev2">Netsuite Finance</a>
+			        <a href="#" class="dropdown-item" id="sage50us">Sage 50 US</a>
+			        <a href="#" class="dropdown-item" id="greatplains">Microsoft Dynamics GP</a>
+			        <a href="#" class="dropdown-item" id="netsuiteerpv2">Netsuite</a>
+			        <a href="#" class="dropdown-item" id="amazons3">amazons3</a>
+					<a href="#" class="dropdown-item" id="chargebee">chargebee</a>
+					<a href="#" class="dropdown-item" id="chargebeev2">chargebeev2</a>
+					<a href="#" class="dropdown-item" id="clover">clover</a>
+					<a href="#" class="dropdown-item" id="coupa">coupa</a>
+					<a href="#" class="dropdown-item" id="expensify">expensify</a>
+					<a href="#" class="dropdown-item" id="freshbooks">freshbooks</a>
+					<a href="#" class="dropdown-item" id="dynamics365fo">dynamics365fo</a>
+					<a href="#" class="dropdown-item" id="quickbooksonprem">quickbooksonprem</a>
+					<a href="#" class="dropdown-item" id="sapbusinessone">sapbusinessone</a>
+					<a href="#" class="dropdown-item" id="slack">slack</a>
+				  </div>
+			</div>
+			<div class="col-sm">
+				<p><button class="btn btn-primary connectButton" onclick="selectConnect()">Connect</button></p>
+			</div>
+		</div>
+		
+		<div class="row" style="margin-top: 80px;">
+			<div class="col-sm" id="message">
+			</div>
+		</div>
+			
+		
+		<script language="javascript">
+			var clickedButton;
+			
+			$(document).ready( function() {
+				$('.dropdown-menu a').click(function(){
+					console.log ("Selected " + $(this).text());
+				    $('#selected').text($(this).text());
+					$("#selectedKey").text ( $(this).attr('id')  );
+				  });
+			});	
+			
+			function selectConnect() {
+				console.log ("Fetching provisioning URL for " + $("#selectedKey").text())
+				
+				
+				$.getJSON ("/getRedirectURL/" + $("#selectedKey").text(), function (data) {
+					console.log ("Opening provisioning @ " + data.redirectUrl);
+					window.open (data.redirectUrl, "_blank");
+				});
+			}
+		
+			window.addEventListener("message", (event) => {
+				$("#message").text("Successfully connected to " + $("#selected").text() );
+				$(".spinnerContainer").css ("display", "none");
+			}, false);
+			
+		</script>
+		
+	</div>
+	
+</div>

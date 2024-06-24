@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+	<head th:replace="fragments/header :: head"></head>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"  />
+		<link rel="stylesheet" href="/bootstrap.min.css" />
+		
+		<style>
+			#page {
+				height:100%;
+			}
+		</style>
+	</head>
+	<body>
+	
+		<div class="header">
+			<div class="row">
+				<div class="col-sm">
+					<h1>
+						<a href="/" title="Back to first page">
+							<img src="/images/mycompany_logo2.png" style="width:70px; height: 60px"/>
+							<span style="vertical-align:middle; font-weight: bold">DemoBank </span>
+							<span style="vertical-align:middle;" th:text="${ ' - ' + session.PAGETITLE }" />
+						</a>
+					</h1>
+				</div>
+				<div class="col-sm" style="text-align:right; color: #fff; padding-right:25px;">
+					<img src="/images/profile.png" class="superSmallLogo" style="margin-right: 15px"/> Guy Van Wert
+				</div>
+			</div>
+		</div>
+	
+	
+	<div class="spinnerContainer" style="display: none">
+		<div class="cssload-loader" style="margin-top: 500px">
+			<div class="cssload-inner cssload-one"></div>
+			<div class="cssload-inner cssload-two"></div>
+			<div class="cssload-inner cssload-three"></div>
+		</div>
+		<div style="text-align:center; z-index: 100; "><i>Provisioning instance...</i></div>
+	</div>
+	
+	     <div layout:fragment="content"></div>
+	   </div>
+	   <div th:replace="fragments/footer :: footer"></div>
+	</body>
+</html>

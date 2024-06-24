@@ -18,9 +18,22 @@ public class EnvironmentService {
 	@Autowired
 	private Environment env;
 	
-	private String urlProperty = "cloudelements.url";
-	private String orgProperty = "cloudelements.organization";
-	private String usrProperty = "cloudelements.user";
+	private String urlProperty 			= "cloudelements.url";
+	private String orgProperty 			= "cloudelements.organization";
+	private String usrProperty 			= "cloudelements.user";
+	private String ezraApplicationId 	= "cloudelements.ezra.applicationId";
+	private String callbackURL 			= "cloudelements.ezra.callbackURL";
+	
+	
+	private String qboToken = "";
+	
+	public String getURLFriendlyQBO() {
+		return qboToken.replaceAll("/", "_-_");
+	}
+	
+	public String getQBOToken () {
+		return qboToken;
+	}
 	
 	public boolean cePropertiesAvailable () {
 		
@@ -48,6 +61,23 @@ public class EnvironmentService {
 			return env.getProperty(urlProperty);
 		} else {
 			return urlProperty;
+		}
+	}
+
+
+	public String getCallbackBaseURL() {
+		if (env != null) {
+			return env.getProperty(callbackURL);
+		} else {
+			return callbackURL;
+		}
+	}
+	
+	public String getEzraApplicationId() {
+		if (env != null) {
+			return env.getProperty(ezraApplicationId);
+		} else {
+			return ezraApplicationId;
 		}
 	}
 }
